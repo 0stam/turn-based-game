@@ -1,0 +1,6 @@
+{
+	"objects": [
+		"objects/wall.json",
+		"objects/cross.json"
+	]
+}

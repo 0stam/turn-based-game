@@ -1,0 +1,5 @@
+{
+	"id": "wall",
+	"collision": true,
+	"graphic": "objects/wall.png"
+}
