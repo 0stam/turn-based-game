@@ -2,5 +2,8 @@
 	"objects": [
 		"objects/wall.json",
 		"objects/cross.json"
+	],
+	"generators": [
+		"generators/simple.json"
 	]
 }

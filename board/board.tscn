@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://board/art/100/field.png" type="Texture" id=1]
-[ext_resource path="res://board/art/border.png" type="Texture" id=2]
+[ext_resource path="res://board/art/100/border.png" type="Texture" id=2]
 [ext_resource path="res://global/themes/0_separation.tres" type="Theme" id=3]
 [ext_resource path="res://board/board.gd" type="Script" id=4]
 

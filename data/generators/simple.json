@@ -1,0 +1,6 @@
+{
+	"id": "simple",
+	"objects": [
+		{"id": "wall", "round": "math", "quantity": [0.2, 0]}
+	]
+}

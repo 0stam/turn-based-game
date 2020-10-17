@@ -24,18 +24,19 @@ func _ready():
 		resizable.append(i) # If excluding some child would be required, consider blacklist
 
 
-func initialize(size_recieved=Vector2.ZERO):
+func initialize(size_recieved=Vector2.ZERO) -> void:
 	if size_recieved != Vector2.ZERO:
 		size = size_recieved
-		
-	grid.texture = load(textures_path.plus_file(texture_size).plus_file(textures["field"])) # Loading sized texture
+	
+	# Loading sized textures
+	grid.texture = load(textures_path.plus_file(texture_size).plus_file(textures["field"]))
 	border.texture = load(textures_path.plus_file(texture_size).plus_file(textures["border"]))
 	
 	for i in resizable: # Resizing children
 		i.rect_min_size = size * texture_size
 		i.rect_size = size * texture_size
 	
-	fields.columns = int(size.y)
+	fields.columns = int(size.x)
 	
 	for i in range(size.x * size.y): # Adding buttons/fields
 		var button : TextureButton = preload("res://board/button.tscn").instance()
@@ -54,5 +55,5 @@ func set_field(coordinates : Vector2, graphic : Texture) -> bool:
 	return true
 
 
-func _on_button_pressed(number : int):
+func _on_button_pressed(number : int) -> void:
 	signals.emit_signal("field_pressed", Vector2(number % int(size.x), int(number / size.x)))

@@ -35,6 +35,15 @@ margin_right = 600.0
 margin_bottom = 720.0
 size = Vector2( 3, 3 )
 
+[node name="Button" type="Button" parent="HBoxContainer"]
+margin_left = 600.0
+margin_right = 800.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+text = "Remake board"
+
 [node name="Systems" type="Node" parent="."]
 
 [node name="Board" parent="Systems" instance=ExtResource( 4 )]
@@ -43,3 +52,4 @@ json_list = "test.json"
 [node name="Display" parent="Systems" instance=ExtResource( 5 )]
 board_data_path = NodePath("../Board")
 board_path = NodePath("../../HBoxContainer/Board")
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_Button_pressed"]
