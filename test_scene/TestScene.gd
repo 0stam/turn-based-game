@@ -8,9 +8,13 @@ onready var board = $HBoxContainer/Board
 func _ready():
 	randomize()
 	Signals.connect("field_pressed", self, "_on_field_pressed")
+	make_board()
+	
+
+
+func make_board():
 	Signals.emit_signal("initialize", Vector2(7, 5))
 	Signals.emit_signal("board_generation_requested", "simple")
-	
 
 
 func _on_field_pressed(cooridinates : Vector2):
@@ -18,5 +22,4 @@ func _on_field_pressed(cooridinates : Vector2):
 
 
 func _on_Button_pressed():
-	Signals.emit_signal("initialize", Vector2(7, 5))
-	Signals.emit_signal("board_generation_requested", "simple")
+	make_board()

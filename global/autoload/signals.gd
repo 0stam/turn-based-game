@@ -6,7 +6,3 @@ signal board_generation_requested(name)
 
 signal field_pressed(position)
 signal board_changed()
-
-
-func _ready():
-	pass

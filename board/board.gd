@@ -1,6 +1,7 @@
 extends Control
 
 
+# Texture names for graphics. Used when using given texture from different resolution folder
 var textures_path = "res://board/art"
 var textures = {
 	"field": "field.png",
@@ -10,6 +11,7 @@ var textures = {
 export var size : Vector2 = Vector2(6, 6)
 export var texture_size : int = 64
 var resizable = [self] # Nodes requiring resizing on columns/rows count change
+var initialized = false
 
 onready var fields : GridContainer = $Fields
 onready var grid : TextureRect = $Grid
@@ -18,15 +20,23 @@ onready var signals = Signals
 
 
 func _ready():
-	signals.connect("initialize", self, "initialize")
+	signals.connect("initialize", self, "initialize_board")
 	
 	for i in get_children(): # Adding nodes witch need resizing
 		resizable.append(i) # If excluding some child would be required, consider blacklist
 
 
-func initialize(size_recieved=Vector2.ZERO) -> void:
-	if size_recieved != Vector2.ZERO:
-		size = size_recieved
+func initialize_board(size_recieved=Vector2.ZERO) -> void:
+	# Picking right size
+	if size_recieved != Vector2.ZERO: # If no size was given, use the scipt varables
+		if size_recieved == size: # If size didn't change, just reset all graphics
+			for i in fields.get_children():
+				i.texture_normal = null
+			return
+		size = size_recieved # If size was changed, proceed with new size
+	
+	while fields.get_child_count() > 0: # Deleting all fields for sake of creating new ones
+		fields.get_child(0).queue_free()
 	
 	# Loading sized textures
 	grid.texture = load(textures_path.plus_file(texture_size).plus_file(textures["field"]))
