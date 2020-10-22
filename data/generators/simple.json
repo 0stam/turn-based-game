@@ -1,6 +1,7 @@
 {
 	"id": "simple",
 	"objects": [
-		{"id": "wall", "round": "math", "quantity": [0.2, 0]}
+		{"id": "wall", "round": "math", "quantity": [0.2, 0]},
+		{"id": "heal", "round": "up", "quantity": [0.02, 0]}
 	]
 }

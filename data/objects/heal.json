@@ -1,0 +1,5 @@
+{
+	"id": "heal",
+	"collision": false,
+	"graphic": "objects/heal.png"
+}

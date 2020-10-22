@@ -5,11 +5,10 @@ extends Control
 var textures_path = "res://board/art"
 var textures = {
 	"field": "field.png",
-	"border": "border.png",
 }
 
 export var size : Vector2 = Vector2(6, 6)
-export var texture_size : int = 64
+export var texture_size : int = 128
 var resizable = [self] # Nodes requiring resizing on columns/rows count change
 var initialized = false
 
@@ -40,7 +39,13 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 	
 	# Loading sized textures
 	grid.texture = load(textures_path.plus_file(texture_size).plus_file(textures["field"]))
-	border.texture = load(textures_path.plus_file(texture_size).plus_file(textures["border"]))
+	
+	# Setting border size
+	var margin : int = round(0.06 * texture_size)
+	border.patch_margin_bottom = margin
+	border.patch_margin_left = margin
+	border.patch_margin_right = margin
+	border.patch_margin_top = margin
 	
 	for i in resizable: # Resizing children
 		i.rect_min_size = size * texture_size

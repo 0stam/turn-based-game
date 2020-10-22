@@ -1,7 +1,7 @@
 {
 	"objects": [
 		"objects/wall.json",
-		"objects/cross.json"
+		"objects/heal.json"
 	],
 	"generators": [
 		"generators/simple.json"
