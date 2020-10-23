@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://test_scene/TestScene.gd" type="Script" id=1]
 [ext_resource path="res://global/themes/0_separation.tres" type="Theme" id=2]
 [ext_resource path="res://board/board.tscn" type="PackedScene" id=3]
 [ext_resource path="res://systems/board.tscn" type="PackedScene" id=4]
 [ext_resource path="res://systems/display.tscn" type="PackedScene" id=5]
+[ext_resource path="res://systems/data.tscn" type="PackedScene" id=6]
+[ext_resource path="res://systems/action.tscn" type="PackedScene" id=7]
 
 [node name="TestScene" type="Control"]
 anchor_right = 1.0
@@ -47,9 +49,16 @@ text = "Remake board"
 [node name="Systems" type="Node" parent="."]
 
 [node name="Board" parent="Systems" instance=ExtResource( 4 )]
-json_list = "test.json"
+data_path = NodePath("../Data")
 
 [node name="Display" parent="Systems" instance=ExtResource( 5 )]
 board_data_path = NodePath("../Board")
 board_path = NodePath("../../HBoxContainer/Board")
+
+[node name="Data" parent="Systems" instance=ExtResource( 6 )]
+json_list = "test.json"
+
+[node name="Action" parent="Systems" instance=ExtResource( 7 )]
+board_system_path = NodePath("../Board")
+
 [connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_Button_pressed"]

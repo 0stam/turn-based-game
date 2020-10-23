@@ -5,5 +5,8 @@
 	],
 	"generators": [
 		"generators/simple.json"
+	],
+	"entities": [
+		"entities/simple_character.json"
 	]
 }

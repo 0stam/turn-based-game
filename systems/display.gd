@@ -20,9 +20,9 @@ func get_graphic(name : String):
 
 
 func update_board():
-	for i in range(len(board_data.board)):
-		for j in range(len(board_data.board[i])):
-			if board_data.board[i][j].has("graphic"):
-				board.set_field(Vector2(i, j), get_graphic(board_data.board[i][j]["graphic"]))
+	for i in range(len(board_data.board[0])):
+		for j in range(len(board_data.board[0][i])):
+			if board_data.get_key(Vector2(i, j), "graphic") != null:
+				board.set_field(Vector2(i, j), get_graphic(board_data.get_key(Vector2(i, j), "graphic")))
 			else:
 				board.set_field(Vector2(i, j), null)
