@@ -44,7 +44,8 @@ func reset_flood_fill():
 			flood_fill[i].append(false)
 
 
-func flood_fill_check(position : Vector2, steps_left=-1) -> void: # Performing flood fill on board
+# Function serving two purposes: map generation and checking if move is legal. Consider splitting.
+func flood_fill_check(position : Vector2, steps_left=-1, ignore=[]) -> void: # Performing flood fill on board
 	# Mechanic used when checking if field is accesable
 	if steps_left != -1:
 		if steps_left == 0:
@@ -54,7 +55,7 @@ func flood_fill_check(position : Vector2, steps_left=-1) -> void: # Performing f
 	# If position.x and y are valid board indexes
 	if len(board[0]) > position.x and position.x >= 0 and len(board[0][0]) > position.y and position.y >= 0:
 		if not flood_fill[position.x][position.y] or steps_left != -1: # If this field wasn't processed previously.
-			if not get_key(position, "collision", false): # If there is no collision here
+			if not get_key(position, "collision", false) or ignore.has(position): # If there is no collision here
 				flood_fill[position.x][position.y] = true # Mark this field as processed
 				for i in range(-1, 2, 2): # Perform same operation for neighbouring fields
 					flood_fill_check(position + Vector2(i, 0), steps_left)
