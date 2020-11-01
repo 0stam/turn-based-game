@@ -16,17 +16,18 @@ func _ready():
 	signals.connect("field_pressed", self, "on_field_pressed")
 	signals.connect("entity_added", self, "add_entity")
 	signals.connect("queue_clear_requested", self, "clear_queue")
+	signals.connect("turn_passed", self, "next")
 
 
 func init_entity_variables():
-	ap = board.get_key(queue[current], "ap")
+	ap = board.get_entity(queue[current])["ap"]
 	actions_usages = {}
-	for i in board.get_key(queue[current], "actions"):
-		actions_usages[i] = board.get_key(queue[current], "actions")[i]["usage_limit"]
+	for i in board.get_entity(queue[current])["actions"]:
+		actions_usages[i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
 
 
-func add_entity(entity_position : Vector2): # Add new entity position
-	queue.append(entity_position)
+func add_entity(index : int): # Add new entity position
+	queue.append(index)
 	if len(queue) == 1:
 		init_entity_variables()
 
@@ -59,16 +60,19 @@ func on_action_changed(action : String):
 func on_field_pressed(position : Vector2):
 	if actions_usages[current_action] == 0:
 		return
-	match current_action:
+	match board.get_entity(queue[current])["actions"][current_action]["type"]:
 		"move":
 			print("Move position: ", position)
 			# Checking if field is reachable
+			# TODO: move to targeting system
 			board.reset_flood_fill()
-			board.flood_fill_check(queue[current], board.get_key(queue[current],
-									"actions")["move"]["val"] + 1, [queue[current]])
-			if board.flood_fill[position.x][position.y] and position != queue[current]:
-				board.move(Vector3(1, queue[current].x, queue[current].y), Vector3(1, position.x, position.y))
-				queue[current] = position
+			board.flood_fill_check(board.get_entity_position(queue[current]),
+								   board.get_entity(queue[current])["actions"]["move"]["val"] + 1,
+								   [board.get_entity_position(queue[current])])
+			if board.flood_fill[position.x][position.y] and position != board.get_entity_position(queue[current]):
+				board.move(Vector3(1, board.get_entity_position(queue[current]).x, board.get_entity_position(queue[current]).y),
+						   Vector3(1, position.x, position.y))
+				signals.emit_signal("entity_moved", queue[current], position)
 			else:
 				return
 		_:
@@ -77,3 +81,4 @@ func on_field_pressed(position : Vector2):
 	actions_usages[current_action] -= 1
 	if ap == 0:
 		next()
+		signals.emit_signal("current_entity_changed", current)

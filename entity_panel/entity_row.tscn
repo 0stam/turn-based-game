@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://global/themes/main.tres" type="Theme" id=1]
+[ext_resource path="res://global/fonts/entity_list.tres" type="DynamicFont" id=2]
+[ext_resource path="res://entity_panel/entity_row.gd" type="Script" id=3]
+
+[node name="EntityRow" type="HBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="."]
+margin_right = 784.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Entity name"
+
+[node name="HP" type="Label" parent="."]
+margin_left = 784.0
+margin_right = 895.0
+margin_bottom = 53.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "HP: 6"
+align = 2
+
+[node name="Margin" type="Label" parent="."]
+margin_left = 895.0
+margin_right = 915.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 20, 0 )
+size_flags_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AP" type="Label" parent="."]
+margin_left = 915.0
+margin_right = 1024.0
+margin_bottom = 53.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "AP: 5"
+align = 2

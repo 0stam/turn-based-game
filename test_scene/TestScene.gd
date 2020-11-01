@@ -17,11 +17,3 @@ func make_board():
 	Signals.emit_signal("queue_clear_requested")
 	Signals.emit_signal("action_changed", "move")
 	$Systems/Board.place_entity()
-
-
-func _on_Button_pressed():
-	make_board()
-
-
-func _on_Button2_pressed():
-	pass

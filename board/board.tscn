@@ -1,9 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://board/board.gd" type="Script" id=1]
-[ext_resource path="res://global/themes/0_separation.tres" type="Theme" id=2]
+[ext_resource path="res://global/themes/main.tres" type="Theme" id=2]
 [ext_resource path="res://board/art/100/field.png" type="Texture" id=3]
 [ext_resource path="res://board/art/border.png" type="Texture" id=4]
+
 
 [node name="Board" type="Control"]
 rect_min_size = Vector2( 600, 600 )

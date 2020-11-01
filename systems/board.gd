@@ -8,6 +8,7 @@ var entities : Dictionary = {}
 
 var board : Array = [[], []] # Actual board array
 var flood_fill : Array = [] # Required for flood fill to work
+var entity_list : Array = [] # List of all entities positions, required for "get_entity" to work
 
 export var data_path : NodePath
 
@@ -17,6 +18,7 @@ onready var signals = Signals
 func _ready():
 	signals.connect("initialize", self, "initialize_board")
 	signals.connect("board_generation_requested", self, "generate_board")
+	signals.connect("queue_clear_requested", self, "clear_entities")
 	data = get_node(data_path)
 	objects = data.objects
 	generators = data.generators
@@ -126,7 +128,8 @@ func place_entity():
 		for j in range(len(board[0][i])):
 			if not get_key(Vector2(i, j), "collision", false):
 				board[1][i][j] = entities["red_dot"]
-				signals.emit_signal("entity_added", Vector2(i, j))
+				entity_list.append(Vector2(i, j))
+				signals.emit_signal("entity_added", len(entity_list) - 1)
 				end = true
 				break
 		if end:
@@ -136,7 +139,8 @@ func place_entity():
 		for j in range(len(board[0][i]) - 1, -1, -1):
 			if not get_key(Vector2(i, j), "collision", false):
 				board[1][i][j] = entities["red_dot"]
-				signals.emit_signal("entity_added", Vector2(i, j))
+				entity_list.append(Vector2(i, j))
+				signals.emit_signal("entity_added", len(entity_list) - 1)
 				end = true
 				break
 		if end:
@@ -157,6 +161,27 @@ func move(from : Vector3, target : Vector3): # Moves object from from to target 
 	if not get_key(Vector2(target.y, target.z), "collision", false):
 		board[target.x][target.y][target.z] = board[from.x][from.y][from.z].duplicate()
 		board[from.x][from.y][from.z] = {}
+		if from.x == 1:
+			for i in range(len(entity_list)):
+				if entity_list[i] == Vector2(from.y, from.z):
+					entity_list[i] = Vector2(target.y, target.z)
+					break
 		signals.emit_signal("board_changed")
 	else:
 		print("***TRIED MOVING TO FIELD WITH COLLISION***")
+
+
+func get_entity(index : int) -> Dictionary:
+	return board[1][entity_list[index].x][entity_list[index].y]
+
+
+func get_entity_count() -> int:
+	return len(entity_list)
+
+
+func get_entity_position(index : int) -> Vector2:
+	return entity_list[index]
+
+
+func clear_entities():
+	entity_list = []

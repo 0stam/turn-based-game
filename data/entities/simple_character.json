@@ -1,10 +1,12 @@
 {
 	"id": "red_dot",
+	"hp": 5,
 	"graphic": "entities/dot.png",
 	"ap": 1,
 	"collision": true,
 	"actions": {
 		"move": {
+			"type": "move",
 			"val": 3,
 			"usage_limit": 1,
 			"cost": 1
