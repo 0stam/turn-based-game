@@ -5,6 +5,8 @@ var current : int = 0 # Index of entity currently performing it's turn
 var current_action = null # Action type selected
 var actions_usages = {} # Dictionary holding number of specific action usages in given turn
 var ap = 0
+var current_entity : Dictionary # Variable storing current entity dictionary for easier access
+var valid_targets : Array = [] # Array recieved from targeting, stores bools for valid/invalid
 
 export var board_system_path : NodePath # Path to board system
 
@@ -17,18 +19,24 @@ func _ready():
 	signals.connect("entity_added", self, "add_entity")
 	signals.connect("queue_clear_requested", self, "clear_queue")
 	signals.connect("turn_passed", self, "next")
+	signals.connect("targets_changed", self, "on_targets_changed")
+	signals.connect("action_triggered", self, "on_action_triggered")
 
 
-func init_entity_variables():
+func init_entity_variables(): # Initialize temporary variables which are not stored in the enity itself
+	current_entity = board.get_entity(queue[current])
 	ap = board.get_entity(queue[current])["ap"]
 	actions_usages = {}
 	for i in board.get_entity(queue[current])["actions"]:
 		actions_usages[i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
+	current_action = ""
+	signals.emit_signal("current_entity_changed", current)
+	signals.emit_signal("targeting_called", {"type": ""}) # Telling targeting system to reset
 
 
-func add_entity(index : int): # Add new entity position
+func add_entity(index : int):
 	queue.append(index)
-	if len(queue) == 1:
+	if len(queue) == 1: # If this is the only entity in queue, set all variables for using it as the active one
 		init_entity_variables()
 
 
@@ -55,30 +63,43 @@ func next():
 
 func on_action_changed(action : String):
 	current_action = action
+	print("INFO: Action changed: ", action)
+	if typeof(current_entity["actions"][action]) == TYPE_STRING:
+		print("Ooops")
+	signals.emit_signal("targeting_called", current_entity["actions"][action])
 
 
 func on_field_pressed(position : Vector2):
+	if current_action == "":
+		return
 	if actions_usages[current_action] == 0:
 		return
-	match board.get_entity(queue[current])["actions"][current_action]["type"]:
+	match current_entity["actions"][current_action]["type"]:
 		"move":
-			print("Move position: ", position)
-			# Checking if field is reachable
-			# TODO: move to targeting system
-			board.reset_flood_fill()
-			board.flood_fill_check(board.get_entity_position(queue[current]),
-								   board.get_entity(queue[current])["actions"]["move"]["val"] + 1,
-								   [board.get_entity_position(queue[current])])
-			if board.flood_fill[position.x][position.y] and position != board.get_entity_position(queue[current]):
+			if valid_targets[position.x][position.y]:
 				board.move(Vector3(1, board.get_entity_position(queue[current]).x, board.get_entity_position(queue[current]).y),
 						   Vector3(1, position.x, position.y))
 				signals.emit_signal("entity_moved", queue[current], position)
-			else:
+				print("Move position: ", position)
+			else: # If move is incorrect, prevent ap and action_usages from decreasing
 				return
-		_:
-			return
+		_: # If action type is incorrect, should never happen
+			print("***Incorrect aciton type was chosen***")
+			return # Preventing ap from decreasing because of error
 	ap -= 1
 	actions_usages[current_action] -= 1
 	if ap == 0:
 		next()
-		signals.emit_signal("current_entity_changed", current)
+
+
+func on_targets_changed(targets : Array):
+	valid_targets = targets
+
+
+func on_action_triggered(action : String):
+	match action:
+		"pass":
+			print("INFO: Turn passed")
+			next()
+		_:
+			print("***Incorrect action type was triggered***")

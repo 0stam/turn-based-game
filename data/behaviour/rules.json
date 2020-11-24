@@ -1,0 +1,6 @@
+{
+	"action_button_types": {
+		"change": ["move"],
+		"trigger": ["pass"]
+	}
+}

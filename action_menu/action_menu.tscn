@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://action_menu/theme.tres" type="Theme" id=1]
+[ext_resource path="res://action_menu/action_button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://action_menu/action_menu.gd" type="Script" id=3]
+
+[node name="ActionMenu" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.33484
+margin_right = -1.33484
+size_flags_horizontal = 3
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+button = ExtResource( 2 )
+
+[node name="Button" parent="." instance=ExtResource( 2 )]
+margin_right = 142.0
+action = "move"

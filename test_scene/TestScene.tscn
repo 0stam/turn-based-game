@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://test_scene/TestScene.gd" type="Script" id=1]
-[ext_resource path="res://global/themes/main.tres" type="Theme" id=2]
+[ext_resource path="res://systems/targeting.tscn" type="PackedScene" id=2]
 [ext_resource path="res://board/board.tscn" type="PackedScene" id=3]
 [ext_resource path="res://systems/board.tscn" type="PackedScene" id=4]
 [ext_resource path="res://systems/display.tscn" type="PackedScene" id=5]
@@ -9,6 +9,7 @@
 [ext_resource path="res://systems/action.tscn" type="PackedScene" id=7]
 [ext_resource path="res://entity_panel/entity_panel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entity_panel/entity_row.tscn" type="PackedScene" id=9]
+[ext_resource path="res://action_menu/action_menu.tscn" type="PackedScene" id=10]
 
 [node name="TestScene" type="Control"]
 anchor_right = 1.0
@@ -29,7 +30,6 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -39,13 +39,27 @@ margin_right = 600.0
 margin_bottom = 720.0
 size = Vector2( 3, 3 )
 
-[node name="EntityPanel" parent="HBoxContainer" instance=ExtResource( 8 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 600.0
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 604.0
 margin_right = 1280.0
 margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EntityPanel" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 676.0
+margin_bottom = 53.0
 entity_row = ExtResource( 9 )
+
+[node name="ActionMenu" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 57.0
+margin_right = 676.0
+margin_bottom = 116.0
 
 [node name="Systems" type="Node" parent="."]
 
@@ -54,11 +68,16 @@ data_path = NodePath("../Data")
 
 [node name="Display" parent="Systems" instance=ExtResource( 5 )]
 board_data_path = NodePath("../Board")
+data_path = NodePath("../Data")
+entity_panel_path = NodePath("../../HBoxContainer/VBoxContainer/EntityPanel")
+action_menu_path = NodePath("../../HBoxContainer/VBoxContainer/ActionMenu")
 board_path = NodePath("../../HBoxContainer/Board")
-entity_panel_path = NodePath("../../HBoxContainer/EntityPanel")
 
 [node name="Data" parent="Systems" instance=ExtResource( 6 )]
 json_list = "test.json"
 
 [node name="Action" parent="Systems" instance=ExtResource( 7 )]
 board_system_path = NodePath("../Board")
+
+[node name="Targeting" parent="Systems" instance=ExtResource( 2 )]
+board_path = NodePath("../Board")

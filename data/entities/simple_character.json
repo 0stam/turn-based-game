@@ -10,6 +10,10 @@
 			"val": 3,
 			"usage_limit": 1,
 			"cost": 1
+		},
+		"pass": {
+			"type": "pass",
+			"usage_limit": 1
 		}
 	}
 }

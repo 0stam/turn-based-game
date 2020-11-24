@@ -84,9 +84,9 @@ func check_for_unreachable():
 	for i in range(len(board[0])): # Checking if some empty field wasn't filled
 		for j in range(len(board[0][0])):
 			if get_key(Vector2(i, j), "collision", false) != (not flood_fill[i][j]):
-				print("DEBUG: map is incorect")
+				print("INFO: map is incorect")
 				return false # If so, returning false
-	print("DEBUG: map is correct")
+	print("INFO: map is correct")
 	return true # Else returning true
 
 

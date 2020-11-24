@@ -1,21 +1,20 @@
-[gd_resource type="Theme" load_steps=3 format=2]
+[gd_resource type="Theme" load_steps=2 format=2]
 
 [ext_resource path="res://global/fonts/entity_list.tres" type="DynamicFont" id=1]
-
-[sub_resource type="StyleBoxTexture" id=1]
 
 [resource]
 default_font = ExtResource( 1 )
 Button/colors/font_color = Color( 1, 1, 1, 1 )
-Button/colors/font_color_disabled = Color( 0, 0, 0, 0.768627 )
+Button/colors/font_color_disabled = Color( 0.415686, 0.415686, 0.415686, 1 )
 Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
-Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/colors/font_color_pressed = Color( 0.898039, 0.898039, 0.898039, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
+Button/icons/ = null
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = null
-Button/styles/normal = SubResource( 1 )
+Button/styles/normal = null
 Button/styles/pressed = null
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -121,9 +120,9 @@ GraphNode/styles/defaultframe = null
 GraphNode/styles/frame = null
 GraphNode/styles/position = null
 GraphNode/styles/selectedframe = null
-GridContainer/constants/hseparation = 0
-GridContainer/constants/vseparation = 0
-HBoxContainer/constants/separation = 0
+GridContainer/constants/hseparation = 4
+GridContainer/constants/vseparation = 4
+HBoxContainer/constants/separation = 4
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
@@ -161,7 +160,7 @@ ItemList/styles/cursor = null
 ItemList/styles/cursor_unfocused = null
 ItemList/styles/selected = null
 ItemList/styles/selected_focus = null
-Label/colors/font_color = Color( 1, 1, 1, 1 )
+Label/colors/font_color = Color( 0, 0, 0, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 1 )
 Label/colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 Label/constants/line_spacing = 3

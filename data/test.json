@@ -8,5 +8,6 @@
 	],
 	"entities": [
 		"entities/simple_character.json"
-	]
+	],
+	"rules": "behaviour/rules.json"
 }

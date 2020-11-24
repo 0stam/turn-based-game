@@ -3,6 +3,7 @@ extends Node
 var objects : Dictionary = {}
 var generators : Dictionary = {}
 var entities : Dictionary = {}
+var rules : Dictionary = {}
 
 export var json_list : String
 
@@ -33,3 +34,4 @@ func parse_data() -> void: # Read all json data
 	for i in json_refference_list["entities"]:
 		i = parse_object(i)
 		entities[i["id"]] = i
+	rules = parse_object(json_refference_list["rules"])
