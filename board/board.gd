@@ -1,19 +1,11 @@
 extends Control
 
-
-# Texture names for graphics. Used when using given texture from different resolution folder
-var textures_path = "res://board/art"
-var textures = {
-	"field": "field.png",
-}
-
 export var size : Vector2 = Vector2(6, 6)
 export var texture_size : int = 128
 var resizable = [self] # Nodes requiring resizing on columns/rows count change
-var initialized = false
 
 onready var fields : GridContainer = $Fields
-onready var grid : TextureRect = $Grid
+onready var grid : GridContainer = $Grid
 onready var border : NinePatchRect = $Border
 onready var signals = Signals
 
@@ -37,9 +29,6 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 	while fields.get_child_count() > 0: # Deleting all fields for sake of creating new ones
 		fields.get_child(0).queue_free()
 	
-	# Loading sized textures
-	grid.texture = load(textures_path.plus_file(texture_size).plus_file(textures["field"]))
-	
 	# Setting border size
 	var margin : int = round(0.06 * texture_size)
 	border.patch_margin_bottom = margin
@@ -51,15 +40,24 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 		i.rect_min_size = size * texture_size
 		i.rect_size = size * texture_size
 	
+	# Adding field buttons and borders with propper size
 	fields.columns = int(size.x)
+	grid.columns = int(size.x)
 	
 	for i in range(size.x * size.y): # Adding buttons/fields
 		var button : TextureButton = preload("res://board/button.tscn").instance()
+		var field : TextureRect = preload("res://board/field.tscn").instance()
+		
 		button.rect_min_size = Vector2.ONE * texture_size
 		button.rect_size = Vector2.ONE * texture_size
 		button.number = i
+		
+		field.rect_min_size = Vector2.ONE * texture_size
+		field.rect_size = Vector2.ONE * texture_size
+		
 		button.connect("button_pressed", self, "_on_button_pressed")
 		fields.add_child(button)
+		grid.add_child(field)
 
 
 func set_field(coordinates : Vector2, graphic : Texture) -> bool:

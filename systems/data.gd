@@ -1,11 +1,12 @@
 extends Node
 
+# Dictionaries containing all data loaded from json files
 var objects : Dictionary = {}
 var generators : Dictionary = {}
 var entities : Dictionary = {}
 var rules : Dictionary = {}
 
-export var json_list : String
+export var json_list : String # Path to file containing paths 
 
 
 func _ready():

@@ -23,7 +23,7 @@ func _ready():
 	signals.connect("action_triggered", self, "on_action_triggered")
 
 
-func init_entity_variables(): # Initialize temporary variables which are not stored in the enity itself
+func init_entity_variables() -> void: # Initialize temporary variables which are not stored in the enity itself
 	current_entity = board.get_entity(queue[current])
 	ap = board.get_entity(queue[current])["ap"]
 	actions_usages = {}
@@ -34,26 +34,26 @@ func init_entity_variables(): # Initialize temporary variables which are not sto
 	signals.emit_signal("targeting_called", {"type": ""}) # Telling targeting system to reset
 
 
-func add_entity(index : int):
+func add_entity(index : int) -> void:
 	queue.append(index)
 	if len(queue) == 1: # If this is the only entity in queue, set all variables for using it as the active one
 		init_entity_variables()
 
 
-func remove_entity(index : int):
+func remove_entity(index : int) -> void:
 	queue.remove(index)
 
 
-func shuffle_queue():
+func shuffle_queue() -> void:
 	queue.shuffle()
 
 
-func clear_queue():
+func clear_queue() -> void:
 	queue = []
 	current = 0
 
 
-func next():
+func next() -> void:
 	if current != len(queue) - 1:
 		current += 1
 	else:
@@ -61,20 +61,18 @@ func next():
 	init_entity_variables()
 
 
-func on_action_changed(action : String):
+func on_action_changed(action : String) -> void:
 	current_action = action
 	print("INFO: Action changed: ", action)
-	if typeof(current_entity["actions"][action]) == TYPE_STRING:
-		print("Ooops")
 	signals.emit_signal("targeting_called", current_entity["actions"][action])
 
 
-func on_field_pressed(position : Vector2):
-	if current_action == "":
+func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by pressing a field
+	if current_action == "": # If player hasn't chosen any action yet.
 		return
-	if actions_usages[current_action] == 0:
+	if actions_usages[current_action] == 0: # If player can't use this action this turn
 		return
-	match current_entity["actions"][current_action]["type"]:
+	match current_entity["actions"][current_action]["type"]: # If action is valid, match correct action
 		"move":
 			if valid_targets[position.x][position.y]:
 				board.move(Vector3(1, board.get_entity_position(queue[current]).x, board.get_entity_position(queue[current]).y),
@@ -92,14 +90,14 @@ func on_field_pressed(position : Vector2):
 		next()
 
 
-func on_targets_changed(targets : Array):
-	valid_targets = targets
+func on_targets_changed(targets : Array) -> void:
+	valid_targets = targets # Put targets recieved from the Targeting system into local variable
 
 
-func on_action_triggered(action : String):
+func on_action_triggered(action : String) -> void: # Handle actions which doesn't require manual aiming
 	match action:
 		"pass":
 			print("INFO: Turn passed")
 			next()
-		_:
+		_: # If incorrect action type was chosen, should never happen
 			print("***Incorrect action type was triggered***")
