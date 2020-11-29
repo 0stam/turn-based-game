@@ -30,7 +30,7 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 		fields.get_child(0).queue_free()
 	
 	# Setting border size
-	var margin : int = round(0.06 * texture_size)
+	var margin : int = int(round(0.06 * texture_size))
 	border.patch_margin_bottom = margin
 	border.patch_margin_left = margin
 	border.patch_margin_right = margin
@@ -60,12 +60,14 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 		grid.add_child(field)
 
 
-func set_field(coordinates : Vector2, graphic : Texture) -> bool:
+func set_field(coordinates : Vector2, graphic : Texture): # Set texture of button at given coordinates
 	var field_number : int = int(coordinates.y * fields.columns + coordinates.x)
-	if field_number >= fields.get_child_count():
-		return false
 	fields.get_child(field_number).texture_normal = graphic
-	return true
+
+
+func set_border(coordinates : Vector2, color : Color) -> void: # Set color of button's border at given coordinates
+	var field_number : int = int(coordinates.y * grid.columns + coordinates.x)
+	grid.get_child(field_number).modulate = color
 
 
 func _on_button_pressed(number : int) -> void:

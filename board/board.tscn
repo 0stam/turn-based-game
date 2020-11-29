@@ -12,12 +12,16 @@ __meta__ = {
 }
 size = Vector2( 8, 7 )
 
-[node name="Fields" type="GridContainer" parent="."]
+[node name="Border" type="NinePatchRect" parent="."]
 margin_right = 600.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 600, 600 )
-theme = ExtResource( 2 )
-columns = 6
+texture = ExtResource( 4 )
+draw_center = false
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 7
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -33,16 +37,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Border" type="NinePatchRect" parent="."]
+[node name="Fields" type="GridContainer" parent="."]
 margin_right = 600.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 600, 600 )
-texture = ExtResource( 4 )
-draw_center = false
-patch_margin_left = 7
-patch_margin_top = 7
-patch_margin_right = 7
-patch_margin_bottom = 7
+theme = ExtResource( 2 )
+columns = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
