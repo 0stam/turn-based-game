@@ -17,16 +17,17 @@ onready var entity_panel : VBoxContainer = get_node(entity_panel_path)
 onready var action_menu : HBoxContainer = get_node(action_menu_path)
 onready var signals = Signals
 
+var button_types : Dictionary = {} # Determines if action button should be created as change or trigger type
 var graphics = {} # Variable storing list of used graphics to avoid loading single texture multiple times
-onready var button_types : Dictionary = {} # Determines if action button should be created as change or trigger type
-
+var current_entity = 0 # Variable storing current entity index for the sake of updating it's ap
 
 func _ready():
 	signals.connect("board_changed", self, "update_board")
 	signals.connect("queue_clear_requested", self, "clear_entities")
 	signals.connect("entity_added", self, "on_entity_added")
 	signals.connect("current_entity_changed", self, "on_current_entity_changed")
-	signals.connect("targets_changed", self, "on_targets_changed")
+	signals.connect("targets_display_changed", self, "on_targets_display_changed")
+	signals.connect("action_succeeded", self, "on_action_succeeded")
 
 
 func get_graphic(name : String) -> Texture: # Function for loading with "graphics" variable
@@ -44,7 +45,7 @@ func update_board() -> void: # Sets all board's fields graphics to proper values
 				board.set_field(Vector2(i, j), null)
 
 
-func clear_entities(): # Tells entity_panel to reset
+func clear_entities() -> void: # Tells entity_panel to reset
 	entity_panel.clear_entities()
 
 
@@ -54,7 +55,8 @@ func on_entity_added(index : int) -> void: # Adds new row to the entity panel
 
 
 func on_current_entity_changed(index : int) -> void:
-	entity_panel.set_active(index) # Set current correct highlight on entity_panel
+	current_entity = index
+	entity_panel.set_active(index) # Set correct current highlight on entity_panel
 	
 	# Create action buttons
 	var entity : Dictionary = board_data.get_entity(index)
@@ -69,10 +71,14 @@ func on_current_entity_changed(index : int) -> void:
 			print("***Incorrect action button type was chosen***")
 
 
-func on_targets_changed(targets : Array) -> void:
+func on_targets_display_changed(targets : Array) -> void:
 	for i in range(len(targets)):
 		for j in range(len(targets[i])):
 			if targets[i][j]:
 				board.set_border(Vector2(i, j), Color("#ff1f1f"))
 			else:
 				board.set_border(Vector2(i, j), Color(1, 1, 1, 1))
+
+
+func on_action_succeeded(ap : int):
+	entity_panel.modify(current_entity, "ap", str(ap))

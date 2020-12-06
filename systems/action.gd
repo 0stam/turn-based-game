@@ -70,7 +70,7 @@ func on_action_changed(action : String) -> void:
 func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by pressing a field
 	if current_action == "": # If player hasn't chosen any action yet.
 		return
-	if actions_usages[current_action] == 0: # If player can't use this action this turn
+	if not validate_action():
 		return
 	match current_entity["actions"][current_action]["type"]: # If action is valid, match correct action
 		"move":
@@ -84,10 +84,7 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 		_: # If action type is incorrect, should never happen
 			print("***Incorrect aciton type was chosen***")
 			return # Preventing ap from decreasing because of error
-	ap -= 1
-	actions_usages[current_action] -= 1
-	if ap == 0:
-		next()
+	end_action()
 
 
 func on_targets_changed(targets : Array) -> void:
@@ -99,5 +96,28 @@ func on_action_triggered(action : String) -> void: # Handle actions which doesn'
 		"pass":
 			print("INFO: Turn passed")
 			next()
+			return
 		_: # If incorrect action type was chosen, should never happen
 			print("***Incorrect action type was triggered***")
+			return
+	end_action()
+
+
+func validate_action() -> bool: # Returns true if action is valid
+	if current_entity["actions"][current_action]["cost"] > ap:
+		return false
+	if actions_usages[current_action] < 1:
+		return false
+	return true
+
+
+func end_action() -> void:
+	ap -= current_entity["actions"][current_action]["cost"]
+	actions_usages[current_action] -= 1
+	current_action = ""
+	if ap < 1:
+		signals.emit_signal("action_succeeded", current_entity["ap"])
+		next()
+	else:
+		signals.emit_signal("action_succeeded", ap)
+		signals.emit_signal("targeting_called", {"type": ""})

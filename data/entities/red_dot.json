@@ -1,0 +1,40 @@
+{
+	"id": "red_dot",
+	"hp": 5,
+	"graphic": "entities/dot.png",
+	"ap": 2,
+	"collision": true,
+	"actions": {
+		"move": {
+			"name": "Walk",
+			"description": "Move two fields",
+			"type": "move",
+			"val": 3,
+			"usage_limit": 2,
+			"cost": 1
+		},
+		"regenerate": {
+			"name": "Regenerate",
+			"descrition": "Regenerate 1-3 HP",
+			"type": "effect",
+			"target": "self",
+			"val": {
+				"heal": [1, 2]
+			},
+			"usage_limit": 1,
+			"cost": 1
+		},
+		"sprint": {
+			"name": "Sprint",
+			"description": "Sprint 5 fields",
+			"type": "move",
+			"val": 5,
+			"usage_limit": 1,
+			"cost": 2
+		},
+		"pass": {
+			"type": "pass",
+			"usage_limit": 1
+		}
+	}
+}

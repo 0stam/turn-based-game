@@ -7,7 +7,7 @@
 		"generators/simple.json"
 	],
 	"entities": [
-		"entities/simple_character.json"
+		"entities/red_dot.json"
 	],
 	"rules": "behaviour/rules.json"
 }

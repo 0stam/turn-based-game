@@ -1,6 +1,7 @@
 extends Node
 
 var avaialable_fields : Array = [] # Array keeping valid targets for given action
+var display : Array = [] # Version of available_fields to be displayed on the board
 var current_entity : int = 0
 
 export var board_path : NodePath
@@ -25,14 +26,18 @@ func on_targeting_called(action):
 		_:
 			reset()
 	signals.emit_signal("targets_changed", avaialable_fields)
+	signals.emit_signal("targets_display_changed", display)
 
 
 func possible_move(entity_position : Vector2, move : int):
 	board.reset_flood_fill()
 	board.flood_fill_check(entity_position, move, [entity_position])
 	avaialable_fields = board.flood_fill.duplicate(true)
+	display = avaialable_fields.duplicate(true)
+	avaialable_fields[entity_position.x][entity_position.y] = false
 
 
 func reset():
 	board.reset_flood_fill()
 	avaialable_fields = board.flood_fill.duplicate(true)
+	display = avaialable_fields.duplicate(true)

@@ -14,4 +14,3 @@ func make_board():
 	Signals.emit_signal("board_generation_requested", "simple")
 	Signals.emit_signal("queue_clear_requested")
 	$Systems/Board.place_entity()
-	Signals.emit_signal("action_changed", "move")

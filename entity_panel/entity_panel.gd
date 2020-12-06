@@ -30,3 +30,10 @@ func clear_entities():
 func set_active(index : int):
 	for i in range(len(entity_list)):
 		entity_list[i].active = i == index
+
+
+func modify(index : int, variable : String, value : String):
+	match variable:
+		"name": get_children()[index].entity_name = value
+		"hp": get_children()[index].hp = value
+		"ap": get_children()[index].ap = value

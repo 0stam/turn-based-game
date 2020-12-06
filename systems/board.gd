@@ -55,7 +55,7 @@ func flood_fill_check(position : Vector2, steps_left=-1, ignore=[]) -> void: # P
 	
 	# If position.x and y are valid board indexes
 	if len(board[0]) > position.x and position.x >= 0 and len(board[0][0]) > position.y and position.y >= 0:
-		if not flood_fill[position.x][position.y]: # If this field wasn't processed previously
+		if not flood_fill[position.x][position.y] or steps_left != -1: # If this field wasn't processed previously
 			if not get_key(position, "collision", false) or ignore.has(position): # If there is no collision here
 				flood_fill[position.x][position.y] = true # Mark this field as processed
 				for i in range(-1, 2, 2): # Perform the same operation for neighbouring fields

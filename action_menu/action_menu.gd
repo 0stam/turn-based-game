@@ -17,4 +17,4 @@ func add_button(text : String, action : String, mode : String): # Instancing but
 
 func clear(): # Removes all children
 	for i in get_children():
-		i.queue_free()
+		remove_child(i)

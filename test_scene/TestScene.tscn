@@ -60,6 +60,7 @@ margin_left = 0.0
 margin_top = 57.0
 margin_right = 676.0
 margin_bottom = 116.0
+size_flags_horizontal = 3
 
 [node name="Systems" type="Node" parent="."]
 
@@ -74,7 +75,7 @@ action_menu_path = NodePath("../../HBoxContainer/VBoxContainer/ActionMenu")
 board_path = NodePath("../../HBoxContainer/Board")
 
 [node name="Data" parent="Systems" instance=ExtResource( 6 )]
-json_list = "test.json"
+json_list = "refference.json"
 
 [node name="Action" parent="Systems" instance=ExtResource( 7 )]
 board_system_path = NodePath("../Board")
