@@ -1,6 +1,6 @@
 {
 	"action_button_types": {
-		"change": ["move"],
+		"change": ["move", "attack"],
 		"trigger": ["pass"]
 	}
 }

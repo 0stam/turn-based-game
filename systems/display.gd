@@ -80,5 +80,11 @@ func on_targets_display_changed(targets : Array) -> void:
 				board.set_border(Vector2(i, j), Color(1, 1, 1, 1))
 
 
-func on_action_succeeded(ap : int):
-	entity_panel.modify(current_entity, "ap", str(ap))
+func on_action_succeeded(ap):
+	for i in range(board_data.get_entity_count()):
+		var entity : Dictionary = board_data.get_entity(i)
+		if current_entity == i:
+			entity_panel.modify(i, "ap", str(ap))
+		else:
+			entity_panel.modify(i, "ap", str(entity["ap"]))
+		entity_panel.modify(i, "hp", str(entity["hp"]))

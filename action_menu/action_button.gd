@@ -12,8 +12,6 @@ func _ready():
 
 
 func _on_Button_pressed():
-	match mode:
-		"change":
-			signals.emit_signal("action_changed", action)
-		"trigger":
-			signals.emit_signal("action_triggered", action)
+	signals.emit_signal("action_changed", action)
+	if mode == "trigger":
+		signals.emit_signal("action_triggered", action)

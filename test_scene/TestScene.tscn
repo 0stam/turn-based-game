@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://test_scene/TestScene.gd" type="Script" id=1]
 [ext_resource path="res://systems/targeting.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://entity_panel/entity_panel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entity_panel/entity_row.tscn" type="PackedScene" id=9]
 [ext_resource path="res://action_menu/action_menu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://systems/damage.tscn" type="PackedScene" id=11]
 
 [node name="TestScene" type="Control"]
 anchor_right = 1.0
@@ -82,3 +83,5 @@ board_system_path = NodePath("../Board")
 
 [node name="Targeting" parent="Systems" instance=ExtResource( 2 )]
 board_path = NodePath("../Board")
+
+[node name="Damage" parent="Systems" instance=ExtResource( 11 )]

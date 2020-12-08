@@ -126,7 +126,8 @@ func place_entity():
 	for i in range(len(board[0])):
 		for j in range(len(board[0][i])):
 			if not get_key(Vector2(i, j), "collision", false):
-				board[1][i][j] = entities["red_dot"]
+				board[1][i][j] = entities["red_dot"].duplicate(true)
+				board[1][i][j]["team"] = 0
 				entity_list.append(Vector2(i, j))
 				signals.emit_signal("entity_added", len(entity_list) - 1)
 				end = true
@@ -137,7 +138,8 @@ func place_entity():
 	for i in range(len(board[0]) - 1, -1, -1):
 		for j in range(len(board[0][i]) - 1, -1, -1):
 			if not get_key(Vector2(i, j), "collision", false):
-				board[1][i][j] = entities["red_dot"]
+				board[1][i][j] = entities["blue_dot"].duplicate(true)
+				board[1][i][j]["team"] = 1
 				entity_list.append(Vector2(i, j))
 				signals.emit_signal("entity_added", len(entity_list) - 1)
 				end = true
@@ -156,7 +158,7 @@ func get_key(position : Vector2, key : String, default=null): # Used for getting
 	return default
 
 
-func move(from : Vector3, target : Vector3): # Moves object from from to target position
+func move(from : Vector3, target : Vector3) -> void: # Moves object from from to target position
 	if not get_key(Vector2(target.y, target.z), "collision", false):
 		board[target.x][target.y][target.z] = board[from.x][from.y][from.z].duplicate()
 		board[from.x][from.y][from.z] = {}
@@ -182,5 +184,12 @@ func get_entity_position(index : int) -> Vector2:
 	return entity_list[index]
 
 
-func clear_entities():
+func clear_entities() -> void:
 	entity_list = []
+
+
+func get_entity_index(position : Vector2) -> int: # Returns the index of an entity on a given position
+	for i in range(len(entity_list)):
+		if entity_list[i] == position:
+			return i
+	return -1

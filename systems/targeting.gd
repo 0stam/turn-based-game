@@ -1,6 +1,6 @@
 extends Node
 
-var avaialable_fields : Array = [] # Array keeping valid targets for given action
+var available_fields : Array = [] # Array keeping valid targets for given action
 var display : Array = [] # Version of available_fields to be displayed on the board
 var current_entity : int = 0
 
@@ -22,22 +22,46 @@ func on_current_entity_changed(index : int):
 func on_targeting_called(action):
 	match action["type"]:
 		"move":
-			possible_move(board.get_entity_position(current_entity), action["val"])
+			possible_move(board.get_entity_position(current_entity), action["val"] + 1)
+		"attack":
+			var entity : Dictionary = board.get_entity(current_entity)
+			attack(board.get_entity_position(current_entity), entity["team"], action["range"])
 		_:
 			reset()
-	signals.emit_signal("targets_changed", avaialable_fields)
+	signals.emit_signal("targets_changed", available_fields)
 	signals.emit_signal("targets_display_changed", display)
 
 
-func possible_move(entity_position : Vector2, move : int):
+func possible_move(entity_position : Vector2, move : int) -> void:
 	board.reset_flood_fill()
 	board.flood_fill_check(entity_position, move, [entity_position])
-	avaialable_fields = board.flood_fill.duplicate(true)
-	display = avaialable_fields.duplicate(true)
-	avaialable_fields[entity_position.x][entity_position.y] = false
+	available_fields = board.flood_fill.duplicate(true)
+	display = available_fields.duplicate(true)
+	available_fields[entity_position.x][entity_position.y] = false
 
 
-func reset():
+func reset() -> void:
 	board.reset_flood_fill()
-	avaialable_fields = board.flood_fill.duplicate(true)
-	display = avaialable_fields.duplicate(true)
+	available_fields = board.flood_fill.duplicate(true)
+	display = available_fields.duplicate(true)
+
+
+func attack(position : Vector2, team : int, attack_range : int) -> void:
+	board.reset_flood_fill()
+	available_fields = board.flood_fill.duplicate(true)
+	for i in range(board.get_entity_count()):
+		var target : Vector2 = board.get_entity_position(i)
+		if abs(position.x - target.x) + abs(position.y - target.y) <= attack_range:
+			if board.get_entity(i)["team"] != team:
+				var probe : Vector2 = position
+				probe = Vector2(probe.x, probe.y)
+				var direction : Vector2 = (target - position).normalized()
+				while true:
+					probe += direction
+					if Vector2(round(probe.x), round(probe.y)) == target:
+						available_fields[target.x][target.y] = true
+						break
+					if board.get_key(Vector2(round(probe.x), round(probe.y)), "collision", false):
+						break
+				
+	display = available_fields

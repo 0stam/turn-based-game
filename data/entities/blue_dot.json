@@ -1,7 +1,7 @@
 {
-	"id": "red_dot",
-	"hp": 5,
-	"graphic": "entities/dot.png",
+	"id": "blue_dot",
+	"hp": 4,
+	"graphic": "entities/blue_dot.png",
 	"ap": 2,
 	"collision": true,
 	"armor": 0,
@@ -10,28 +10,19 @@
 			"name": "Walk",
 			"description": "Move two fields",
 			"type": "move",
-			"val": 2,
-			"usage_limit": 2,
+			"val": 3,
+			"usage_limit": 1,
 			"cost": 1
 		},
 		"attack": {
 			"name": "Attack",
 			"descrition": "Attack nearby target",
 			"type": "attack",
-			"target": "enemy",
-			"pierce": 1,
-			"range": 1,
-			"val": [2, 3],
+			"pierce": 0,
+			"range": 4,
+			"val": [1, 2],
 			"usage_limit": 1,
 			"cost": 1
-		},
-		"sprint": {
-			"name": "Sprint",
-			"description": "Sprint 5 fields",
-			"type": "move",
-			"val": 5,
-			"usage_limit": 1,
-			"cost": 2
 		},
 		"pass": {
 			"type": "pass",
