@@ -20,6 +20,7 @@ onready var signals = Signals
 var button_types : Dictionary = {} # Determines if action button should be created as change or trigger type
 var graphics = {} # Variable storing list of used graphics to avoid loading single texture multiple times
 var current_entity = 0 # Variable storing current entity index for the sake of updating it's ap
+var color : String
 
 func _ready():
 	signals.connect("board_changed", self, "update_board")
@@ -51,23 +52,25 @@ func clear_entities() -> void: # Tells entity_panel to reset
 
 func on_entity_added(index : int) -> void: # Adds new row to the entity panel
 	var entity : Dictionary = board_data.get_entity(index)
-	entity_panel.add_entity(entity["id"], str(entity["hp"]), str(entity["ap"]), board_data.get_entity_count() == 1)
+	entity_panel.add_entity(entity["name"], str(entity["hp"]), str(entity["ap"]), board_data.get_entity_count() == 1, entity["color"])
 
 
 func on_current_entity_changed(index : int) -> void:
 	current_entity = index
 	entity_panel.set_active(index) # Set correct current highlight on entity_panel
 	
+	color = board_data.get_entity(current_entity)["color"]
+	
 	# Create action buttons
 	var entity : Dictionary = board_data.get_entity(index)
 	action_menu.clear()
 	for i in entity["actions"].keys():
 		if entity["actions"][i]["type"] in data["rules"]["action_button_types"]["change"]:
-			action_menu.add_button(i, i, "change")
+			action_menu.add_button(entity["actions"][i]["name"], i, "change")
 		elif entity["actions"][i]["type"] in data["rules"]["action_button_types"]["trigger"]:
-			action_menu.add_button(i, i, "trigger")
+			action_menu.add_button(entity["actions"][i]["name"], i, "trigger")
 		else:
-			action_menu.add_button(i, i, "trigger")
+			action_menu.add_button(entity["actions"][i]["name"], i, "trigger")
 			print("***Incorrect action button type was chosen***")
 
 
@@ -75,7 +78,7 @@ func on_targets_display_changed(targets : Array) -> void:
 	for i in range(len(targets)):
 		for j in range(len(targets[i])):
 			if targets[i][j]:
-				board.set_border(Vector2(i, j), Color("#ff1f1f"))
+				board.set_border(Vector2(i, j), Color(color))
 			else:
 				board.set_border(Vector2(i, j), Color(1, 1, 1, 1))
 

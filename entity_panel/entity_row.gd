@@ -4,6 +4,7 @@ extends HBoxContainer
 var entity_name : String = "" setget set_name
 var hp : String = "" setget set_hp
 var ap : String = "" setget set_ap
+var color : String = "" setget set_color
 
 var active : bool = true setget set_active
 
@@ -37,3 +38,9 @@ func set_active(value : bool):
 		modulate.a = 1
 	else:
 		modulate.a = 0.4
+
+
+func set_color(value : String):
+	color = value
+	modulate = color
+	set_active(active)

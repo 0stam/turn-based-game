@@ -8,11 +8,11 @@ func _ready():
 
 
 func add_button(text : String, action : String, mode : String): # Instancing button and assigning it proper values
-	var new_button : Button = button.instance()
+	var new_button = button.instance()
+	add_child(new_button)
 	new_button.text = text
 	new_button.action = action
 	new_button.mode = mode
-	add_child(new_button)
 
 
 func clear(): # Removes all children

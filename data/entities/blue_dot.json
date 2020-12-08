@@ -1,10 +1,12 @@
 {
 	"id": "blue_dot",
+	"name": "BLUE DOT",
 	"hp": 4,
 	"graphic": "entities/blue_dot.png",
 	"ap": 2,
 	"collision": true,
 	"armor": 0,
+	"color": "#00b0ff",
 	"actions": {
 		"move": {
 			"name": "Walk",
@@ -26,6 +28,7 @@
 		},
 		"pass": {
 			"type": "pass",
+			"name": "Pass",
 			"cost": 0,
 			"usage_limit": 1
 		}

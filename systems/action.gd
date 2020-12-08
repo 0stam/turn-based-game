@@ -86,7 +86,7 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 								current_entity["actions"][current_action]["val"][1] + 1))
 			var pierce : int = current_entity["actions"][current_action]["pierce"]
 			signals.emit_signal("attack_requested", target, damage, pierce)
-			print("INFO: Target health after damage: ", target["hp"])
+			print("INFO: Target's health after damage: ", target["hp"])
 		_: # If action type is incorrect, should never happen
 			print("***Incorrect aciton type was chosen***")
 			return # Preventing ap from decreasing because of error

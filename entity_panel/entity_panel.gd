@@ -11,7 +11,7 @@ func _ready():
 	pass
 
 
-func add_entity(entity_name : String, hp : String, ap : String, active : bool):
+func add_entity(entity_name : String, hp : String, ap : String, active : bool, color : String):
 	var entity : HBoxContainer = entity_row.instance()
 	entity_list.append(entity)
 	add_child(entity)
@@ -19,6 +19,7 @@ func add_entity(entity_name : String, hp : String, ap : String, active : bool):
 	entity.hp = hp
 	entity.ap = ap
 	entity.active = active
+	entity.color = color
 
 
 func clear_entities():

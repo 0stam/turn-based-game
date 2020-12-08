@@ -1,13 +1,15 @@
 {
 	"id": "red_dot",
+	"name": "RED DOT",
 	"hp": 5,
 	"graphic": "entities/dot.png",
 	"ap": 2,
 	"collision": true,
 	"armor": 0,
+	"color": "#ff0002",
 	"actions": {
 		"move": {
-			"name": "Walk",
+			"name": "Move",
 			"description": "Move two fields",
 			"type": "move",
 			"val": 2,
@@ -35,6 +37,7 @@
 		},
 		"pass": {
 			"type": "pass",
+			"name": "Pass",
 			"cost": 0,
 			"usage_limit": 1
 		}
