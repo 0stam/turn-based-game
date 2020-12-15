@@ -2,5 +2,21 @@
 	"action_button_types": {
 		"change": ["move", "attack"],
 		"trigger": ["pass"]
+	},
+	"action_parameters": {
+		"move": {
+			"val": "Range",
+			"usage_limit": "Usage limit",
+			"cost": "Cost"
+		},
+		"attack": {
+			"val": "Damage",
+			"range": "Range",
+			"pierce": "Armor pierce",
+			"usage_limit": "Usage limit",
+			"cost": "Cost"
+		},
+		"pass": {
+		}
 	}
 }

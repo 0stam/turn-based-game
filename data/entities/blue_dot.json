@@ -1,6 +1,7 @@
 {
 	"id": "blue_dot",
 	"name": "BLUE DOT",
+	"max_hp": 4,
 	"hp": 4,
 	"graphic": "entities/blue_dot.png",
 	"ap": 2,

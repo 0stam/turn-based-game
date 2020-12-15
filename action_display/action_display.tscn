@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://global/templates/bordered_panel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://action_display/action_display.gd" type="Script" id=2]
+
+[node name="ActionDisplay" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Border" parent="." index="0"]
+margin_bottom = 2149.0
+
+[node name="Margin" parent="." index="1"]
+margin_bottom = 2149.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin" index="0"]
+margin_left = 7.0
+margin_top = 5.0
+margin_right = 33.0
+margin_bottom = 2144.0
+
+[node name="Default" type="Label" parent="Margin/VBoxContainer" index="0"]
+margin_right = 26.0
+margin_bottom = 2139.0
+text = "Select an action for it's parameters to be displayed"
+autowrap = true

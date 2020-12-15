@@ -1,6 +1,6 @@
 extends Control
 
-export var size : Vector2 = Vector2(6, 6)
+export var size : Vector2 = Vector2(0, 0)
 export var texture_size : int = 128
 var resizable = [self] # Nodes requiring resizing on columns/rows count change
 

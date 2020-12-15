@@ -8,6 +8,7 @@ export(NodePath) var data_path
 export(NodePath) var entity_panel_path
 export(NodePath) var action_menu_path
 export(NodePath) var board_path
+export(NodePath) var action_display_path
 
 # Resolved referrences to nodes for which paths vere given
 onready var board_data : Node = get_node(board_data_path)
@@ -15,12 +16,14 @@ onready var data : Node = get_node(data_path)
 onready var board : Control = get_node(board_path)
 onready var entity_panel : VBoxContainer = get_node(entity_panel_path)
 onready var action_menu : HBoxContainer = get_node(action_menu_path)
+onready var action_display : MarginContainer = get_node(action_display_path)
+onready var entity_temp : Dictionary = board_data.entity_temp
 onready var signals = Signals
 
 var button_types : Dictionary = {} # Determines if action button should be created as change or trigger type
 var graphics = {} # Variable storing list of used graphics to avoid loading single texture multiple times
 var current_entity = 0 # Variable storing current entity index for the sake of updating it's ap
-var color : String
+var color : String # Stores color for UI elements matching current player
 
 func _ready():
 	signals.connect("board_changed", self, "update_board")
@@ -29,6 +32,7 @@ func _ready():
 	signals.connect("current_entity_changed", self, "on_current_entity_changed")
 	signals.connect("targets_display_changed", self, "on_targets_display_changed")
 	signals.connect("action_succeeded", self, "on_action_succeeded")
+	signals.connect("targeting_called", self, "on_targeting_called")
 
 
 func get_graphic(name : String) -> Texture: # Function for loading with "graphics" variable
@@ -64,13 +68,15 @@ func on_current_entity_changed(index : int) -> void:
 	# Create action buttons
 	var entity : Dictionary = board_data.get_entity(index)
 	action_menu.clear()
+	print(entity_temp)
 	for i in entity["actions"].keys():
-		if entity["actions"][i]["type"] in data["rules"]["action_button_types"]["change"]:
-			action_menu.add_button(entity["actions"][i]["name"], i, "change")
+		var action : Dictionary = entity["actions"][i]
+		if action["type"] in data["rules"]["action_button_types"]["change"]:
+			action_menu.add_button(action["name"], i, "change", action["cost"], action["usage_limit"])
 		elif entity["actions"][i]["type"] in data["rules"]["action_button_types"]["trigger"]:
-			action_menu.add_button(entity["actions"][i]["name"], i, "trigger")
+			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"])
 		else:
-			action_menu.add_button(entity["actions"][i]["name"], i, "trigger")
+			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"])
 			print("***Incorrect action button type was chosen***")
 
 
@@ -83,11 +89,24 @@ func on_targets_display_changed(targets : Array) -> void:
 				board.set_border(Vector2(i, j), Color(1, 1, 1, 1))
 
 
-func on_action_succeeded(ap):
+func on_action_succeeded() -> void:
 	for i in range(board_data.get_entity_count()):
 		var entity : Dictionary = board_data.get_entity(i)
 		if current_entity == i:
-			entity_panel.modify(i, "ap", str(ap))
+			entity_panel.modify(i, "ap", str(entity_temp["ap"]))
 		else:
 			entity_panel.modify(i, "ap", str(entity["ap"]))
 		entity_panel.modify(i, "hp", str(entity["hp"]))
+	action_menu.refresh_buttons(entity_temp["ap"], entity_temp["actions_usages"])
+
+
+func on_targeting_called(action):
+	action_display.clear()
+	if action["type"] == "":
+		return
+	var rules : Dictionary = data.rules["action_parameters"][action["type"]]
+	for i in rules.keys():
+		if action[i] is Array:
+			action_display.add_parameter(rules[i], str(action[i][0]) + "-" + str(action[i][1]))
+		else:
+			action_display.add_parameter(rules[i], str(action[i]))

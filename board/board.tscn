@@ -10,7 +10,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-size = Vector2( 8, 7 )
 
 [node name="Border" type="NinePatchRect" parent="."]
 margin_right = 600.0

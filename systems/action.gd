@@ -3,8 +3,6 @@ extends Node
 var queue : Array = [] # List of entities in the 
 var current : int = 0 # Index of entity currently performing it's turn
 var current_action = null # Action type selected
-var actions_usages = {} # Dictionary holding number of specific action usages in given turn
-var ap = 0
 var current_entity : Dictionary # Variable storing current entity dictionary for easier access
 var valid_targets : Array = [] # Array recieved from targeting, stores bools for valid/invalid
 
@@ -12,6 +10,7 @@ export var board_system_path : NodePath # Path to board system
 
 onready var board = get_node(board_system_path) # Actual board system refference
 onready var signals = Signals
+onready var temp = board.entity_temp
 
 func _ready():
 	signals.connect("action_changed", self, "on_action_changed")
@@ -25,10 +24,10 @@ func _ready():
 
 func init_entity_variables() -> void: # Initialize temporary variables which are not stored in the enity itself
 	current_entity = board.get_entity(queue[current])
-	ap = board.get_entity(queue[current])["ap"]
-	actions_usages = {}
+	temp["ap"] = board.get_entity(queue[current])["ap"]
+	temp["actions_usages"] = {}
 	for i in board.get_entity(queue[current])["actions"]:
-		actions_usages[i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
+		temp["actions_usages"][i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
 	current_action = ""
 	signals.emit_signal("current_entity_changed", current)
 	signals.emit_signal("targeting_called", {"type": ""}) # Telling targeting system to reset
@@ -112,20 +111,20 @@ func on_action_triggered(action : String) -> void: # Handle actions which doesn'
 
 
 func validate_action() -> bool: # Returns true if action is valid
-	if current_entity["actions"][current_action]["cost"] > ap:
+	if current_entity["actions"][current_action]["cost"] > temp["ap"]:
 		return false
-	if actions_usages[current_action] < 1:
+	if temp["actions_usages"][current_action] < 1:
 		return false
 	return true
 
 
 func end_action() -> void:
-	ap -= current_entity["actions"][current_action]["cost"]
-	actions_usages[current_action] -= 1
+	temp["ap"] -= current_entity["actions"][current_action]["cost"]
+	temp["actions_usages"][current_action] -= 1
 	current_action = ""
-	if ap < 1:
+	if temp["ap"] < 1:
 		next()
-		signals.emit_signal("action_succeeded", ap)
+		signals.emit_signal("action_succeeded")
 	else:
-		signals.emit_signal("action_succeeded", ap)
+		signals.emit_signal("action_succeeded")
 		signals.emit_signal("targeting_called", {"type": ""})

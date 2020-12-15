@@ -1,6 +1,7 @@
 {
 	"id": "red_dot",
 	"name": "RED DOT",
+	"max_hp": 5,
 	"hp": 5,
 	"graphic": "entities/dot.png",
 	"ap": 2,

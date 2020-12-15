@@ -8,7 +8,7 @@ signal board_changed()
 
 signal action_changed(name)
 signal action_triggered(name)
-signal action_succeeded(ap) # ap is currently the only information which is not obtained from board by display
+signal action_succeeded() # temprary variables after action was performed
 
 signal queue_shuffle_requested()
 signal queue_clear_requested()
