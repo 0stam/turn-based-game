@@ -72,11 +72,11 @@ func on_current_entity_changed(index : int) -> void:
 	for i in entity["actions"].keys():
 		var action : Dictionary = entity["actions"][i]
 		if action["type"] in data["rules"]["action_button_types"]["change"]:
-			action_menu.add_button(action["name"], i, "change", action["cost"], action["usage_limit"])
+			action_menu.add_button(action["name"], i, "change", action["cost"], action["usage_limit"], entity["color"])
 		elif entity["actions"][i]["type"] in data["rules"]["action_button_types"]["trigger"]:
-			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"])
+			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"], entity["color"])
 		else:
-			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"])
+			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"], entity["color"])
 			print("***Incorrect action button type was chosen***")
 
 

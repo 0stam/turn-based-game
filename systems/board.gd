@@ -9,7 +9,7 @@ var entities : Dictionary = {}
 var board : Array = [[], []] # Actual board array
 var flood_fill : Array = [] # Required for flood fill to work
 var entity_list : Array = [] # List of all entities positions, required for "get_entity" to work
-var entity_temp : Dictionary = {"ap": 0, "actionss_usages": {}} # Variables storing temporary entity variables
+var entity_temp : Dictionary = {"ap": 0, "actions_usages": {}} # Variables storing temporary entity variables
 
 export var data_path : NodePath
 

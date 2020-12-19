@@ -2,7 +2,7 @@ extends Control
 
 onready var board = $HBoxContainer/Board
 
-var board_size : Vector2 = Vector2(3, 3)
+var board_size : Vector2 = Vector2(9, 5)
 
 
 func _ready():
@@ -11,15 +11,13 @@ func _ready():
 
 
 func make_board(size : Vector2):
-	var texture_size = 0
-	var screen_width : int = get_viewport().size.x
-	print(screen_width)
-	while (texture_size + 64) * size.x + 760 <= screen_width:
-		texture_size += 64
-	board.texture_size = texture_size
+	var screen_size : Vector2 = get_viewport().size
+	var max_size = Vector2((screen_size.x - 720) / board_size.x, screen_size.y / board_size.y)
+	if max_size.x < max_size.y:
+		board.texture_size = max_size.x
+	else:
+		board.texture_size = max_size.y
 	Signals.emit_signal("initialize", size)
 	Signals.emit_signal("board_generation_requested", "simple")
 	Signals.emit_signal("queue_clear_requested")
 	$Systems/Board.place_entity()
-	yield(get_tree().create_timer(0.1), "timeout")
-	print($HBoxContainer/VBoxContainer/ActionDisplay.rect_size)

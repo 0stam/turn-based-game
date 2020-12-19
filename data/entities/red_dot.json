@@ -1,13 +1,13 @@
 {
 	"id": "red_dot",
-	"name": "RED DOT",
+	"name": "FIGHTER",
 	"max_hp": 5,
 	"hp": 5,
-	"graphic": "entities/dot.png",
+	"graphic": "entities/sword.png",
 	"ap": 2,
 	"collision": true,
 	"armor": 0,
-	"color": "#ff0002",
+	"color": "#ff1e1e",
 	"actions": {
 		"move": {
 			"name": "Move",

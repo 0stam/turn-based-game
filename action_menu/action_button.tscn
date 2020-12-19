@@ -1,37 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://action_menu/action_button.gd" type="Script" id=1]
-[ext_resource path="res://board/art/border.png" type="Texture" id=2]
+[ext_resource path="res://global/templates/bordered_button.tscn" type="PackedScene" id=2]
 
-[node name="ActionButton" type="MarginContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
+[node name="ActionButton" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button" type="Button" parent="."]
-margin_right = 53.0
-margin_bottom = 40.0
-focus_mode = 0
-shortcut_in_tooltip = false
-enabled_focus_mode = 0
-text = "Action"
-flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
-margin_right = 53.0
-margin_bottom = 40.0
-texture = ExtResource( 2 )
-draw_center = false
-patch_margin_left = 3
-patch_margin_top = 3
-patch_margin_right = 3
-patch_margin_bottom = 3
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
