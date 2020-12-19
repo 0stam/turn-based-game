@@ -7,12 +7,11 @@ func _ready():
 	pass
 
 
-func add_button(text : String, action : String, mode : String, cost : int, usage_limit : int, color : Color):
+func add_button(text : String, action : String, cost : int, usage_limit : int, color : Color):
 	var new_button = button.instance()
 	add_child(new_button)
 	new_button.text = text
 	new_button.action = action
-	new_button.mode = mode
 	new_button.cost = cost
 	new_button.usage_limit = usage_limit
 	new_button.color = color

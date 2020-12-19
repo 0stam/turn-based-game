@@ -96,10 +96,10 @@ func on_targets_changed(targets : Array) -> void:
 	valid_targets = targets # Put targets recieved from the Targeting system into local variable
 
 
-func on_action_triggered(action : String) -> void: # Handle actions which doesn't require manual aiming
+func on_action_triggered() -> void: # Handle actions which doesn't require manual aiming
 	if not validate_action():
 		return
-	match action:
+	match current_action:
 		"pass":
 			print("INFO: Turn passed")
 			next()

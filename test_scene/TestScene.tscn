@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://test_scene/TestScene.gd" type="Script" id=1]
 [ext_resource path="res://systems/targeting.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://systems/damage.tscn" type="PackedScene" id=11]
 [ext_resource path="res://action_display/action_display.tscn" type="PackedScene" id=12]
 [ext_resource path="res://action_display/parameter_line.tscn" type="PackedScene" id=13]
+[ext_resource path="res://accept_button/trigger_action.tscn" type="PackedScene" id=14]
 
 [node name="TestScene" type="Control"]
 anchor_right = 1.0
@@ -39,12 +40,12 @@ __meta__ = {
 
 [node name="Board" parent="HBoxContainer" instance=ExtResource( 3 )]
 margin_right = 600.0
-margin_bottom = 720.0
+margin_bottom = 2332.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 604.0
 margin_right = 1280.0
-margin_bottom = 720.0
+margin_bottom = 2332.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -70,6 +71,12 @@ margin_right = 676.0
 margin_bottom = 229.0
 parameter_line_path = ExtResource( 13 )
 
+[node name="TriggerAction" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 14 )]
+visible = false
+margin_top = 233.0
+margin_right = 676.0
+margin_bottom = 292.0
+
 [node name="Systems" type="Node" parent="."]
 
 [node name="Board" parent="Systems" instance=ExtResource( 4 )]
@@ -82,6 +89,7 @@ entity_panel_path = NodePath("../../HBoxContainer/VBoxContainer/EntityPanel")
 action_menu_path = NodePath("../../HBoxContainer/VBoxContainer/ActionMenu")
 board_path = NodePath("../../HBoxContainer/Board")
 action_display_path = NodePath("../../HBoxContainer/VBoxContainer/ActionDisplay")
+trigger_action_path = NodePath("../../HBoxContainer/VBoxContainer/TriggerAction")
 
 [node name="Data" parent="Systems" instance=ExtResource( 6 )]
 json_list = "refference.json"

@@ -7,7 +7,7 @@ signal field_pressed(position)
 signal board_changed()
 
 signal action_changed(name)
-signal action_triggered(name)
+signal action_triggered()
 signal action_succeeded() # temporary variables after action was performed
 
 signal queue_shuffle_requested()

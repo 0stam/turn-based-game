@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://global/templates/bordered_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://accept_button/trigger_action.gd" type="Script" id=2]
+[ext_resource path="res://global/themes/action_menu.tres" type="Theme" id=3]
+
+[node name="TriggerAction" instance=ExtResource( 1 )]
+theme = ExtResource( 3 )
+script = ExtResource( 2 )
+
+[node name="Button" parent="." index="0"]
+margin_right = 152.0
+margin_bottom = 59.0
+text = "Accept"
+
+[node name="Border" parent="." index="1"]
+margin_right = 152.0
+margin_bottom = 59.0
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

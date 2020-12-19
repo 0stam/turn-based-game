@@ -9,6 +9,7 @@ export(NodePath) var entity_panel_path
 export(NodePath) var action_menu_path
 export(NodePath) var board_path
 export(NodePath) var action_display_path
+export(NodePath) var trigger_action_path
 
 # Resolved referrences to nodes for which paths vere given
 onready var board_data : Node = get_node(board_data_path)
@@ -18,6 +19,7 @@ onready var entity_panel : VBoxContainer = get_node(entity_panel_path)
 onready var action_menu : HBoxContainer = get_node(action_menu_path)
 onready var action_display : MarginContainer = get_node(action_display_path)
 onready var entity_temp : Dictionary = board_data.entity_temp
+onready var trigger_action : MarginContainer = get_node(trigger_action_path)
 onready var signals = Signals
 
 var button_types : Dictionary = {} # Determines if action button should be created as change or trigger type
@@ -71,13 +73,7 @@ func on_current_entity_changed(index : int) -> void:
 	print(entity_temp)
 	for i in entity["actions"].keys():
 		var action : Dictionary = entity["actions"][i]
-		if action["type"] in data["rules"]["action_button_types"]["change"]:
-			action_menu.add_button(action["name"], i, "change", action["cost"], action["usage_limit"], entity["color"])
-		elif entity["actions"][i]["type"] in data["rules"]["action_button_types"]["trigger"]:
-			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"], entity["color"])
-		else:
-			action_menu.add_button(action["name"], i, "trigger", action["cost"], action["usage_limit"], entity["color"])
-			print("***Incorrect action button type was chosen***")
+		action_menu.add_button(action["name"], i, action["cost"], action["usage_limit"], entity["color"])
 
 
 func on_targets_display_changed(targets : Array) -> void:
@@ -100,13 +96,21 @@ func on_action_succeeded() -> void:
 	action_menu.refresh_buttons(entity_temp["ap"], entity_temp["actions_usages"])
 
 
-func on_targeting_called(action):
+func on_targeting_called(action): # Function updateing action specific information (description and trigger)
+	# Clear the parameter information panel and hide trigger button
 	action_display.clear()
-	if action["type"] == "":
+	trigger_action.hide()
+	
+	if action["type"] == "": # If action is reseted, stop here
 		return
+	
+	# Fill ActionDisplay with proper parameters
 	var rules : Dictionary = data.rules["action_parameters"][action["type"]]
 	for i in rules.keys():
 		if action[i] is Array:
 			action_display.add_parameter(rules[i], str(action[i][0]) + "-" + str(action[i][1]))
 		else:
 			action_display.add_parameter(rules[i], str(action[i]))
+	
+	if action["type"] in data["rules"]["action_button_types"]["trigger"]: # SShow trigger button if necessary
+		trigger_action.show()
