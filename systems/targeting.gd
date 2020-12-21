@@ -51,17 +51,17 @@ func attack(position : Vector2, team : int, attack_range : int) -> void:
 	available_fields = board.flood_fill.duplicate(true)
 	for i in range(board.get_entity_count()):
 		var target : Vector2 = board.get_entity_position(i)
-		if abs(position.x - target.x) + abs(position.y - target.y) <= attack_range:
-			if board.get_entity(i)["team"] != team:
-				var probe : Vector2 = position
-				probe = Vector2(probe.x, probe.y)
-				var direction : Vector2 = (target - position).normalized()
+		var diff : Vector2 = Vector2(target.x - position.x, target.y - position.y)
+		if (abs(diff.x) + abs(diff.y)) <= attack_range and team != board.get_entity(board.get_entity_index(target))["team"]:
+			if diff.x == 0 or diff.y == 0 or abs(diff.x) == abs(diff.y):
+				diff.x = clamp(diff.x, -1, 1)
+				diff.y = clamp(diff.y, -1, 1)
+				var probe : Vector2 = position + diff
 				while true:
-					probe += direction
-					if Vector2(round(probe.x), round(probe.y)) == target:
-						available_fields[target.x][target.y] = true
+					if probe == target:
+						available_fields[probe.x][probe.y] = true
+					if board.get_key(probe, "collision", false):
 						break
-					if board.get_key(Vector2(round(probe.x), round(probe.y)), "collision", false):
-						break
+					probe += diff
 				
 	display = available_fields
