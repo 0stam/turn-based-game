@@ -24,6 +24,7 @@ func _ready():
 
 func init_entity_variables() -> void: # Initialize temporary variables which are not stored in the enity itself
 	current_entity = board.get_entity(queue[current])
+	apply_effects()
 	temp["ap"] = board.get_entity(queue[current])["ap"]
 	temp["actions_usages"] = {}
 	for i in board.get_entity(queue[current])["actions"]:
@@ -82,7 +83,7 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 		"attack":
 			var target : Dictionary = board.get_entity(board.get_entity_index(position))
 			var damage : int = int(rand_range(current_entity["actions"][current_action]["val"][0], 
-								current_entity["actions"][current_action]["val"][1] + 1))
+							current_entity["actions"][current_action]["val"][1] + 1 + current_entity["effects"]["damage"][0]))
 			var pierce : int = current_entity["actions"][current_action]["pierce"]
 			signals.emit_signal("attack_requested", target, damage, pierce)
 			print("INFO: Target's health after damage: ", target["hp"])
@@ -128,3 +129,20 @@ func end_action() -> void:
 	else:
 		signals.emit_signal("action_succeeded")
 		signals.emit_signal("targeting_called", {"type": ""})
+
+
+func apply_effects():
+	for i in current_entity["effects"].keys():
+		var effect : Array = current_entity["effects"][i]
+		if effect[1] > 0:
+			match i:
+				"regen":
+					signals.emit_signal("regeneration_requested", current_entity, effect[0])
+				"armor", "hp", "damage", "healing":
+					pass # Effects handled somewhere else, prevents warning below from beeing triggered
+				_:
+					print("***Unimplemented effect***")
+			effect[1] -= 1
+		else:
+			effect[0] = 0
+

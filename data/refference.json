@@ -7,7 +7,7 @@
 		"generators/simple.json"
 	],
 	"entities": [
-		"entities/red_dot.json",
+		"entities/fighter.json",
 		"entities/blue_dot.json"
 	],
 	"rules": "behaviour/rules.json"

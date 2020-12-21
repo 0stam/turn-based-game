@@ -8,6 +8,15 @@
 	"collision": true,
 	"armor": 0,
 	"color": "#00b0ff",
+
+	"effects": {
+                "armor": [0, 0],
+                "regen": [5, 2],
+                "hp": [0, 0],
+                "damage": [0, 0],
+                "healing": [0, 0]
+        },
+
 	"actions": {
 		"move": {
 			"name": "Walk",
