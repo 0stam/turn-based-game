@@ -22,6 +22,7 @@ signal current_entity_changed(index)
 # Board related entity actions
 signal entity_added(index)
 signal entity_moved(index, destination)
+signal entity_removed(index)
 
 # Targeting
 signal targeting_called(action)

@@ -35,6 +35,8 @@ func _ready():
 	signals.connect("targets_display_changed", self, "on_targets_display_changed")
 	signals.connect("action_succeeded", self, "on_action_succeeded")
 	signals.connect("targeting_called", self, "on_targeting_called")
+	signals.connect("entity_removed", self, "on_entity_removed")
+	
 
 
 func get_graphic(name : String) -> Texture: # Function for loading with "graphics" variable
@@ -114,3 +116,7 @@ func on_targeting_called(action): # Function updateing action specific informati
 	
 	if action["type"] in data["rules"]["action_button_types"]["trigger"]: # SShow trigger button if necessary
 		trigger_action.show()
+
+
+func on_entity_removed(index : int):
+	entity_panel.remove_entity(index)

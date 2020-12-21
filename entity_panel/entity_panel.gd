@@ -22,6 +22,10 @@ func add_entity(entity_name : String, hp : String, ap : String, active : bool, c
 	entity.color = color
 
 
+func remove_entity(index : int):
+	remove_child(get_child(index))
+
+
 func clear_entities():
 	entity_list = []
 	for i in get_children():

@@ -20,6 +20,7 @@ func _ready():
 	signals.connect("turn_passed", self, "next")
 	signals.connect("targets_changed", self, "on_targets_changed")
 	signals.connect("action_triggered", self, "on_action_triggered")
+	signals.connect("entity_removed", self, "on_entity_removed")
 
 
 func init_entity_variables() -> void: # Initialize temporary variables which are not stored in the enity itself
@@ -81,12 +82,11 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 			signals.emit_signal("entity_moved", queue[current], position)
 			print("Move position: ", position)
 		"attack":
-			var target : Dictionary = board.get_entity(board.get_entity_index(position))
-			var damage : int = int(rand_range(current_entity["actions"][current_action]["val"][0], 
+			var target : int = board.get_entity_index(position)
+			var damage : int = int(rand_range(current_entity["actions"][current_action]["val"][0],
 							current_entity["actions"][current_action]["val"][1] + 1 + current_entity["effects"]["damage"][0]))
 			var pierce : int = current_entity["actions"][current_action]["pierce"]
 			signals.emit_signal("attack_requested", target, damage, pierce)
-			print("INFO: Target's health after damage: ", target["hp"])
 		_: # If action type is incorrect, should never happen
 			print("***Incorrect aciton type was chosen***")
 			return # Preventing ap from decreasing because of error
@@ -146,3 +146,10 @@ func apply_effects():
 		else:
 			effect[0] = 0
 
+
+func on_entity_removed(index : int):
+	queue.remove(index)
+	if current > index or (current == index and current == len(queue)):
+		current -= 1
+	elif current == index:
+		init_entity_variables()

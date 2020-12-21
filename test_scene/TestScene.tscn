@@ -101,3 +101,4 @@ board_system_path = NodePath("../Board")
 board_path = NodePath("../Board")
 
 [node name="Damage" parent="Systems" instance=ExtResource( 11 )]
+board_path = NodePath("../Board")

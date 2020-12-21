@@ -38,7 +38,7 @@ func initialize_board(size : Vector2, reset:=true) -> void: # Fill board with em
 			board[1][i].append({})
 
 
-func reset_flood_fill():
+func reset_flood_fill() -> void:
 	# Reseting flood fill array
 	flood_fill = []
 	for i in range(len(board[0])):
@@ -65,7 +65,7 @@ func flood_fill_check(position : Vector2, steps_left=-1, ignore=[]) -> void: # P
 		
 
 
-func check_for_unreachable():
+func check_for_unreachable() -> bool:
 	# Finding first empty field
 	var start : Vector2 = Vector2.ZERO
 	var exit : bool = false # Indicates need of breaking outer loop
@@ -122,7 +122,7 @@ func generate_board(name : String) -> void:
 	signals.emit_signal("board_changed")
 
 
-func place_entity():
+func place_entity() -> void:
 	var end : bool = false
 	for i in range(len(board[0])):
 		for j in range(len(board[0][i])):
@@ -194,3 +194,10 @@ func get_entity_index(position : Vector2) -> int: # Returns the index of an enti
 		if entity_list[i] == position:
 			return i
 	return -1
+
+
+func remove_entity(index) -> void:
+	board[1][entity_list[index].x][entity_list[index].y] = {}
+	entity_list.remove(index)
+	signals.emit_signal("entity_removed", index)
+	signals.emit_signal("board_changed")
