@@ -67,6 +67,9 @@ func on_current_entity_changed(index : int) -> void:
 	current_entity = index
 	entity_panel.set_active(index) # Set correct current highlight on entity_panel
 	
+	for i in range(board_data.get_entity_count()): # Reset displayed ap values
+		entity_panel.modify(i, "ap", str(board_data.get_entity(i)["ap"]))
+	
 	color = board_data.get_entity(current_entity)["color"]
 	
 	# Create action buttons
@@ -114,7 +117,7 @@ func on_targeting_called(action): # Function updateing action specific informati
 		else:
 			action_display.add_parameter(rules[i], str(action[i]))
 	
-	if action["type"] in data["rules"]["action_button_types"]["trigger"]: # SShow trigger button if necessary
+	if action["type"] in data["rules"]["action_button_types"]["trigger"]: # Show trigger button if necessary
 		trigger_action.show()
 
 

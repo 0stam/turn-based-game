@@ -23,7 +23,8 @@ func add_entity(entity_name : String, hp : String, ap : String, active : bool, c
 
 
 func remove_entity(index : int):
-	remove_child(get_child(index))
+	remove_child(entity_list[index])
+	entity_list.remove(index)
 
 
 func clear_entities():

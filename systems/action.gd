@@ -31,7 +31,7 @@ func init_entity_variables() -> void: # Initialize temporary variables which are
 	for i in board.get_entity(queue[current])["actions"]:
 		temp["actions_usages"][i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
 	current_action = ""
-	signals.emit_signal("current_entity_changed", current)
+	signals.emit_signal("current_entity_changed", queue[current])
 	signals.emit_signal("targeting_called", {"type": ""}) # Telling targeting system to reset
 
 
@@ -55,7 +55,7 @@ func clear_queue() -> void:
 
 
 func next() -> void:
-	if current != len(queue) - 1:
+	if current < len(queue) - 1:
 		current += 1
 	else:
 		current = 0
@@ -147,9 +147,20 @@ func apply_effects():
 			effect[0] = 0
 
 
-func on_entity_removed(index : int):
-	queue.remove(index)
-	if current > index or (current == index and current == len(queue)):
+func on_entity_removed(index_original : int):
+	# Changing indexes if necessary and finding local index
+	var index : int = 0 # index stores position in a local queue, while index_original stores the board index
+	for i in range(len(queue)):
+		if queue[i] > index_original:
+			queue[i] -= 1
+		elif queue[i] == index_original:
+			index = i
+	
+	queue.remove(index) # Removing entity from the queue
+	
+	# Correcting current entity value
+	if current > index:
 		current -= 1
+		signals.emit_signal("current_entity_changed", queue[current])
 	elif current == index:
 		init_entity_variables()

@@ -1,0 +1,49 @@
+{
+	"id": "blue_dot",
+	"name": "ARCHER",
+	"graphic": "entities/bow.png",
+
+	"max_hp": 4,
+	"hp": 4,
+	"ap": 2,
+	"armor": 0,
+
+	"collision": true,
+	"color": "#00b0ff",
+
+	"effects": {
+		"armor": [0, 0],
+		"regen": [0, 0],
+		"hp": [0, 0],
+		"damage": [0, 0],
+		"healing": [0, 0]
+	},
+
+	"actions": {
+		"move": {
+			"name": "Move",
+			"description": "Basic move action",
+			"type": "move",
+			"val": 3,
+			"usage_limit": 1,
+			"cost": 1
+		},
+		"attack": {
+			"name": "Attack",
+			"descrition": "Higher range but weaker attack",
+			"type": "attack",
+			"target": "enemy",
+			"pierce": 1,
+			"range": 4,
+			"val": [1, 2],
+			"usage_limit": 1,
+			"cost": 1
+		},
+		"pass": {
+			"type": "pass",
+			"name": "Pass",
+			"cost": 0,
+			"usage_limit": 1
+		}
+	}
+}

@@ -151,7 +151,7 @@ func place_entity() -> void:
 	signals.emit_signal("board_changed")
 
 
-func get_key(position : Vector2, key : String, default=null): # Used for getting same key from board
+func get_key(position : Vector2, key : String, default=null): # Used for getting key from board
 	if board[1][position.x][position.y].has(key):
 		return board[1][position.x][position.y][key]
 	if board[0][position.x][position.y].has(key):

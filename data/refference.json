@@ -8,7 +8,7 @@
 	],
 	"entities": [
 		"entities/fighter.json",
-		"entities/blue_dot.json"
+		"entities/archer.json"
 	],
 	"rules": "behaviour/rules.json"
 }
