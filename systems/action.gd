@@ -84,12 +84,19 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 			var damage : int = int(rand_range(action["damage"][0] + current_entity["effects"]["damage"][0],
 								action["damage"][1] + 1 + current_entity["effects"]["damage"][0]))
 			signals.emit_signal("attack_requested", target, damage, action["pierce"])
+		if "heal" in action:
+			var heal : int = int(rand_range(action["heal"][0] + current_entity["effects"]["healing"][0],
+								action["healing"][1] + 1 + current_entity["effects"]["healing"][0]))
+			signals.emit_signal("regeneration_requested", target, heal)
+		if "effects" in action:
+			signals.emit_signal("effects_addition_requested", target, action["effects"])
 	
 	if action["target"][0] == "field":
 		if "move" in action:
 			var entity_pos : Vector2 = board.get_entity_position(queue[current])
 			board.move(Vector3(1, entity_pos.x, entity_pos.y), Vector3(1, position.x, position.y))
 			signals.emit_signal("entity_moved", queue[current], position)
+	
 	end_action()
 
 
@@ -137,7 +144,7 @@ func apply_effects() -> void:
 		if effect[1] > 0:
 			match i:
 				"regen":
-					signals.emit_signal("regeneration_requested", current_entity, effect[0])
+					signals.emit_signal("regeneration_requested", queue[current], effect[0])
 				"armor", "hp", "damage", "healing":
 					pass # Effects handled somewhere else, prevents warning below from beeing triggered
 				_:

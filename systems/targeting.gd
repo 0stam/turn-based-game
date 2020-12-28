@@ -36,6 +36,7 @@ func on_targeting_called(action) -> void:
 
 
 func possible_move(entity_position : Vector2, move : int) -> void:
+	move += board.get_entity(current_entity)["effects"]["move"][0]
 	board.reset_flood_fill()
 	board.flood_fill_check(entity_position, move, [entity_position])
 	available_fields = board.flood_fill.duplicate(true)
