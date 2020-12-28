@@ -21,26 +21,28 @@
 
 	"actions": {
 		"move": {
+			"target": ["field", "empty"],
 			"name": "Move",
 			"description": "Basic move action",
-			"type": "move",
-			"val": 3,
+			"move": 3,
 			"usage_limit": 1,
 			"cost": 1
 		},
 		"attack": {
+			"target": ["entity", "enemy"],
 			"name": "Attack",
-			"descrition": "Higher range but weaker attack",
-			"type": "attack",
-			"target": "enemy",
-			"pierce": 1,
+			"descrition": "Attack weaker than normal, but of a higher range.",
+			"damage": [1, 2],
+			"pierce": 0,
 			"range": 4,
-			"val": [1, 2],
 			"usage_limit": 1,
-			"cost": 1
+			"cost": 1,
+			"effects": {
+				"regen": [5, 2]
+			}
 		},
 		"pass": {
-			"type": "pass",
+			"target": ["pass", ""],
 			"name": "Pass",
 			"cost": 0,
 			"usage_limit": 1

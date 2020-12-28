@@ -106,18 +106,20 @@ func on_targeting_called(action): # Function updateing action specific informati
 	action_display.clear()
 	trigger_action.hide()
 	
-	if action["type"] == "": # If action is reseted, stop here
+	if action["target"][0] == "": # If action is reseted, stop here
 		return
 	
 	# Fill ActionDisplay with proper parameters
-	var rules : Dictionary = data.rules["action_parameters"][action["type"]]
+	var rules : Dictionary = data.rules["action_parameters"]
 	for i in rules.keys():
+		if not i in action:
+			continue
 		if action[i] is Array:
 			action_display.add_parameter(rules[i], str(action[i][0]) + "-" + str(action[i][1]))
 		else:
 			action_display.add_parameter(rules[i], str(action[i]))
 	
-	if action["type"] in data["rules"]["action_button_types"]["trigger"]: # Show trigger button if necessary
+	if action["target"][0] in data["rules"]["action_button_types"]["trigger"]: # Show trigger button if necessary
 		trigger_action.show()
 
 

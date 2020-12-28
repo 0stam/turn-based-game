@@ -1,15 +1,15 @@
 {
-	"id": "red_dot",
-	"name": "FIGHTER",
-	"graphic": "entities/sword.png",
+	"id": "trooper",
+	"name": "TROOPER",
+	"graphic": "entities/sword_green.png",
 
-	"max_hp": 5,
-	"hp": 5,
+	"max_hp": 6,
+	"hp": 6,
 	"ap": 2,
 	"armor": 0,
 
 	"collision": true,
-	"color": "#ff1e1e",
+	"color": "#00ff00",
 
 	"effects": {
 		"armor": [0, 0],
@@ -23,8 +23,8 @@
 		"move": {
 			"target": ["field", "empty"],
 			"name": "Move",
-			"description": "Move two fields",
-			"move": 2,
+			"description": "Basic move action",
+			"move": 3,
 			"usage_limit": 2,
 			"cost": 1
 		},
@@ -32,7 +32,7 @@
 			"target": ["entity", "enemy"],
 			"name": "Attack",
 			"descrition": "Attack nearby target",
-			"damage": [2, 3],
+			"damage": [1, 2],
 			"pierce": 0,
 			"range": 1,
 			"usage_limit": 1,
@@ -44,8 +44,8 @@
 		"sprint": {
 			"target": ["field", "empty"],
 			"name": "Sprint",
-			"description": "Sprint 5 fields",
-			"move": 5,
+			"description": "Sprint 4 fields",
+			"move": 4,
 			"usage_limit": 1,
 			"cost": 2
 		},

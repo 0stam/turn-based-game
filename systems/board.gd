@@ -124,8 +124,8 @@ func generate_board(name : String) -> void:
 
 func place_entity() -> void:
 	var end : bool = false
-	for i in range(len(board[0])):
-		for j in range(len(board[0][i])):
+	for j in range(len(board[0][0])):
+		for i in range(len(board[0])):
 			if not get_key(Vector2(i, j), "collision", false):
 				board[1][i][j] = entities["red_dot"].duplicate(true)
 				board[1][i][j]["team"] = 0
@@ -136,11 +136,23 @@ func place_entity() -> void:
 		if end:
 			break
 	end = false
-	for i in range(len(board[0]) - 1, -1, -1):
-		for j in range(len(board[0][i]) - 1, -1, -1):
+	for j in range(len(board[0][0]) - 1, -1, -1):
+		for i in range(len(board[0]) - 1, -1, -1):
 			if not get_key(Vector2(i, j), "collision", false):
 				board[1][i][j] = entities["blue_dot"].duplicate(true)
 				board[1][i][j]["team"] = 1
+				entity_list.append(Vector2(i, j))
+				signals.emit_signal("entity_added", len(entity_list) - 1)
+				end = true
+				break
+		if end:
+			break
+	end = false
+	for j in range(len(board[0][0]) - 1, -1, -1):
+		for i in range(len(board[0])):
+			if not get_key(Vector2(i, j), "collision", false):
+				board[1][i][j] = entities["trooper"].duplicate(true)
+				board[1][i][j]["team"] = 2
 				entity_list.append(Vector2(i, j))
 				signals.emit_signal("entity_added", len(entity_list) - 1)
 				end = true

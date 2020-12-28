@@ -1,22 +1,15 @@
 {
 	"action_button_types": {
-		"change": ["move", "attack"],
+		"change": ["entity", "field"],
 		"trigger": ["pass"]
 	},
 	"action_parameters": {
-		"move": {
-			"val": "Range",
-			"usage_limit": "Usage limit",
-			"cost": "Cost"
-		},
-		"attack": {
-			"val": "Damage",
-			"range": "Range",
-			"pierce": "Armor pierce",
-			"usage_limit": "Usage limit",
-			"cost": "Cost"
-		},
-		"pass": {
-		}
+		"damage": "Damage",
+		"heal": "Heal",
+		"move": "Range",
+		"range": "Range",
+		"pierce": "Armor pierce",
+		"cost": "Cost",
+		"usage_limit": "Usage limit"
 	}
 }

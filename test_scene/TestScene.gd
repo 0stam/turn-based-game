@@ -2,7 +2,7 @@ extends Control
 
 onready var board = $HBoxContainer/Board
 
-var board_size : Vector2 = Vector2(9, 5)
+var board_size : Vector2 = Vector2(8, 7)
 
 
 func _ready():

@@ -32,7 +32,7 @@ func init_entity_variables() -> void: # Initialize temporary variables which are
 		temp["actions_usages"][i] = board.get_entity(queue[current])["actions"][i]["usage_limit"]
 	current_action = ""
 	signals.emit_signal("current_entity_changed", queue[current])
-	signals.emit_signal("targeting_called", {"type": ""}) # Telling targeting system to reset
+	signals.emit_signal("targeting_called", {"target": ["", ""]}) # Telling targeting system to reset
 
 
 func add_entity(index : int) -> void:
@@ -75,21 +75,21 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 		return
 	if not valid_targets[position.x][position.y]:
 		return
-	match current_entity["actions"][current_action]["type"]: # If action is valid, match correct action
-		"move":
+	
+	var action : Dictionary = current_entity["actions"][current_action]
+	
+	if action["target"][0] == "entity":
+		var target : int = board.get_entity_index(position)
+		if "damage" in action:
+			var damage : int = int(rand_range(action["damage"][0] + current_entity["effects"]["damage"][0],
+								action["damage"][1] + 1 + current_entity["effects"]["damage"][0]))
+			signals.emit_signal("attack_requested", target, damage, action["pierce"])
+	
+	if action["target"][0] == "field":
+		if "move" in action:
 			var entity_pos : Vector2 = board.get_entity_position(queue[current])
 			board.move(Vector3(1, entity_pos.x, entity_pos.y), Vector3(1, position.x, position.y))
 			signals.emit_signal("entity_moved", queue[current], position)
-			print("Move position: ", position)
-		"attack":
-			var target : int = board.get_entity_index(position)
-			var damage : int = int(rand_range(current_entity["actions"][current_action]["val"][0],
-							current_entity["actions"][current_action]["val"][1] + 1 + current_entity["effects"]["damage"][0]))
-			var pierce : int = current_entity["actions"][current_action]["pierce"]
-			signals.emit_signal("attack_requested", target, damage, pierce)
-		_: # If action type is incorrect, should never happen
-			print("***Incorrect aciton type was chosen***")
-			return # Preventing ap from decreasing because of error
 	end_action()
 
 
@@ -128,10 +128,10 @@ func end_action() -> void:
 		signals.emit_signal("action_succeeded")
 	else:
 		signals.emit_signal("action_succeeded")
-		signals.emit_signal("targeting_called", {"type": ""})
+		signals.emit_signal("targeting_called", {"target": ["", ""]})
 
 
-func apply_effects():
+func apply_effects() -> void:
 	for i in current_entity["effects"].keys():
 		var effect : Array = current_entity["effects"][i]
 		if effect[1] > 0:
@@ -147,7 +147,7 @@ func apply_effects():
 			effect[0] = 0
 
 
-func on_entity_removed(index_original : int):
+func on_entity_removed(index_original : int) -> void:
 	# Changing indexes if necessary and finding local index
 	var index : int = 0 # index stores position in a local queue, while index_original stores the board index
 	for i in range(len(queue)):
