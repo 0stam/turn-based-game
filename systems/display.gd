@@ -111,13 +111,21 @@ func on_targeting_called(action): # Function updateing action specific informati
 	
 	# Fill ActionDisplay with proper parameters
 	var rules : Dictionary = data.rules["action_parameters"]
-	for i in rules.keys():
-		if not i in action:
+	var aliases : Dictionary = data.rules["aliases"]
+	
+	for i in rules.keys(): # For each key in rules (uses rules instead of action for consistent parameter order)
+		if not i in action: # If given key isn't present it current action, continue
 			continue
-		if action[i] is Array:
-			action_display.add_parameter(rules[i], str(action[i][0]) + "-" + str(action[i][1]))
+
+		var alias = action[i] # Variable holding value to be displayed, can be overwitten by alias
+		if i in aliases: # If given parameter has aliases available
+			for j in aliases[i]:
+				if j[0] == action[i]:
+					alias = j[1]
+		if alias is Array:
+			action_display.add_parameter(rules[i], str(alias[0]) + "-" + str(alias[1]))
 		else:
-			action_display.add_parameter(rules[i], str(action[i]))
+			action_display.add_parameter(rules[i], str(alias))
 	
 	if action["target"][0] in data["rules"]["action_button_types"]["trigger"]: # Show trigger button if necessary
 		trigger_action.show()

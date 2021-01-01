@@ -5,6 +5,7 @@ var current : int = 0 # Index of entity currently performing it's turn
 var current_action = null # Action type selected
 var current_entity : Dictionary # Variable storing current entity dictionary for easier access
 var valid_targets : Array = [] # Array recieved from targeting, stores bools for valid/invalid
+var target_died : bool = false
 
 export var board_system_path : NodePath # Path to board system
 
@@ -55,6 +56,7 @@ func clear_queue() -> void:
 
 
 func next() -> void:
+	decrease_effects()
 	if current < len(queue) - 1:
 		current += 1
 	else:
@@ -84,10 +86,16 @@ func on_field_pressed(position : Vector2) -> void: # Handle actions triggered by
 			var damage : int = int(rand_range(action["damage"][0] + current_entity["effects"]["damage"][0],
 								action["damage"][1] + 1 + current_entity["effects"]["damage"][0]))
 			signals.emit_signal("attack_requested", target, damage, action["pierce"])
+		if target_died:
+			end_action()
+			return
 		if "heal" in action:
 			var heal : int = int(rand_range(action["heal"][0] + current_entity["effects"]["healing"][0],
 								action["healing"][1] + 1 + current_entity["effects"]["healing"][0]))
 			signals.emit_signal("regeneration_requested", target, heal)
+		if target_died:
+			end_action()
+			return
 		if "effects" in action:
 			signals.emit_signal("effects_addition_requested", target, action["effects"])
 	
@@ -127,6 +135,7 @@ func validate_action() -> bool: # Returns true if action is valid
 
 
 func end_action() -> void:
+	target_died = false
 	temp["ap"] -= current_entity["actions"][current_action]["cost"]
 	temp["actions_usages"][current_action] -= 1
 	current_action = ""
@@ -145,17 +154,24 @@ func apply_effects() -> void:
 			match i:
 				"regen":
 					signals.emit_signal("regeneration_requested", queue[current], effect[0])
-				"armor", "hp", "damage", "healing":
+				"armor", "hp", "damage", "healing", "move":
 					pass # Effects handled somewhere else, prevents warning below from beeing triggered
 				_:
 					print("***Unimplemented effect***")
+
+
+func decrease_effects():
+	for i in current_entity["effects"].keys():
+		var effect : Array = current_entity["effects"][i]
+		if effect[1] != 0:
 			effect[1] -= 1
-		else:
+		if effect[1] == 0:
 			effect[0] = 0
 
 
 func on_entity_removed(index_original : int) -> void:
 	# Changing indexes if necessary and finding local index
+	target_died = true
 	var index : int = 0 # index stores position in a local queue, while index_original stores the board index
 	for i in range(len(queue)):
 		if queue[i] > index_original:

@@ -4,6 +4,7 @@
 		"trigger": ["pass"]
 	},
 	"action_parameters": {
+		"target": "Target",
 		"damage": "Damage",
 		"heal": "Heal",
 		"move": "Range",
@@ -11,5 +12,18 @@
 		"pierce": "Armor pierce",
 		"cost": "Cost",
 		"usage_limit": "Usage limit"
+	},
+	"aliases": {
+		"range": [
+			[-1, "INF"]
+		],
+		"target": [
+			[["entity", ""], "player"],
+			[["entity", "ally"], "ally"],
+			[["entity", "enemy"], "enemy"],
+			[["entity", "self"], "self"],
+			[["field", "empty"], "field"],
+			[["field", ""], "field"]
+		]
 	}
 }

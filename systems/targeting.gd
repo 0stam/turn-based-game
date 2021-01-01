@@ -36,7 +36,7 @@ func on_targeting_called(action) -> void:
 
 
 func possible_move(entity_position : Vector2, move : int) -> void:
-	move += board.get_entity(current_entity)["effects"]["move"][0]
+	move = clamp(move + board.get_entity(current_entity)["effects"]["move"][0], 0, INF)
 	board.reset_flood_fill()
 	board.flood_fill_check(entity_position, move, [entity_position])
 	available_fields = board.flood_fill.duplicate(true)
@@ -57,7 +57,7 @@ func line_of_sight(pos1 : Vector2, pos2 : Vector2) -> bool:
 		
 	var slant : bool = direction.x == direction.y # Determines necessity of checking addidiotal fields besides the shot path
 	var probe : Vector2 = pos1 + direction # Position of currently performed check
-	while true:
+	while -1 < probe.x and probe.x < len(board.board[0]) and -1 < probe.y and probe.y < len(board.board[0][0]):
 		if board.get_key(probe, "collision", false) and probe != pos2:
 			return false
 		if slant:
@@ -67,7 +67,7 @@ func line_of_sight(pos1 : Vector2, pos2 : Vector2) -> bool:
 		if probe == pos2:
 			return true
 		probe += direction
-	return false
+	return true
 
 
 func entity(action):

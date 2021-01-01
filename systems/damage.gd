@@ -32,5 +32,6 @@ func add_effects(target_index : int, effects : Dictionary):
 	var target : Dictionary = board.get_entity(target_index)["effects"]
 	for i in effects.keys():
 		if (target[i][0] * target[i][1] < effects[i][0] * effects[i][1] or
-			(target[i][0] * target[i][1] == effects[i][0] * effects[i][1] and target[i][0] < effects[i][0])):
+			(target[i][0] * target[i][1] == effects[i][0] * effects[i][1] and abs(target[i][0]) < abs(effects[i][0])) or
+			target[i][0] * target[i][1] == 0):
 			target[i] = effects[i].duplicate(true)

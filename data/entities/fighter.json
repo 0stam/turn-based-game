@@ -37,7 +37,10 @@
 			"pierce": 0,
 			"range": 1,
 			"usage_limit": 1,
-			"cost": 1
+			"cost": 1,
+			"effects": {
+				"move": [-1, 1]
+			}
 		},
 		"sprint": {
 			"target": ["field", "empty"],
