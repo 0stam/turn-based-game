@@ -2,11 +2,14 @@
 	"id": "heal",
 	"collision": false,
 	"graphic": "objects/heal.png",
-	"effects": {
-                "armor": [0, 0],
-                "regen": [0, 0],
-                "hp": [0, 0],
-                "damage": [0, 0],
-                "healing": [0, 0]
-        }
+	"effects": {},
+	"on_step": {
+		"heal": 2
+	},
+	"object": {
+		"time": -1,
+		"current_time": -1,
+		"collectible": true,
+		"respawns": true
+	}
 }

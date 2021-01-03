@@ -1,11 +1,15 @@
 extends Node
 
-var queue : Array = [] # List of entities in the 
+var queue : Array = [] # List of entities in the queue
 var current : int = 0 # Index of entity currently performing it's turn
+
 var current_action = null # Action type selected
 var current_entity : Dictionary # Variable storing current entity dictionary for easier access
+
 var valid_targets : Array = [] # Array recieved from targeting, stores bools for valid/invalid
 var target_died : bool = false
+
+var objects : Array = []
 
 export var board_system_path : NodePath # Path to board system
 
@@ -59,8 +63,10 @@ func next() -> void:
 	decrease_effects()
 	if current < len(queue) - 1:
 		current += 1
+		
 	else:
 		current = 0
+		handle_objects()
 	init_entity_variables()
 
 
@@ -187,3 +193,20 @@ func on_entity_removed(index_original : int) -> void:
 		signals.emit_signal("current_entity_changed", queue[current])
 	elif current == index:
 		init_entity_variables()
+
+
+func handle_objects():
+	var i : int = 0
+	while i < board.get_object_count():
+		var object : Dictionary = board.get_object(i)["object"]
+		if object["time"] != -1:
+			if object["current_time"] > 0:
+				object["current_time"] -= 1
+			else:
+				if object["respawns"]:
+					board.replace_object(i)
+					object["current_time"] = object["time"]
+				else:
+					board.remove_object(i)
+					i -= 1
+		i += 1

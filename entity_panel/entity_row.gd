@@ -1,6 +1,5 @@
 extends HBoxContainer
 
-# TODO: rewrite to actually store values and add HP and AP prefixes to labels
 var entity_name : String = "" setget set_name
 var hp : String = "" setget set_hp
 var ap : String = "" setget set_ap

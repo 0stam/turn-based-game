@@ -33,3 +33,6 @@ signal targets_display_changed(targets)
 signal attack_requested(target, damage, pierce)
 signal regeneration_requested(target, regeneration)
 signal effects_addition_requested(target, effects)
+
+# Objects
+signal object_added(index)

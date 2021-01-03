@@ -9,6 +9,7 @@ var entities : Dictionary = {}
 var board : Array = [[], []] # Actual board array
 var flood_fill : Array = [] # Required for flood fill to work
 var entity_list : Array = [] # List of all entities positions, required for "get_entity" to work
+var object_list : Array = [] # List of objects requiring control of the objects system
 var entity_temp : Dictionary = {"ap": 0, "actions_usages": {}} # Variables storing temporary entity variables
 
 export var data_path : NodePath
@@ -119,6 +120,12 @@ func generate_board(name : String) -> void:
 			break
 		else: # If some empty field cannot be accessed (eg. map is split), try again
 			initialize_board(Vector2(len(board[0]), len(board[0][0])))
+	# Checking for objects which need to be registered for the object system
+	for i in len(board[0]):
+		for j in len(board[0][i]):
+			if "object" in board[0][i][j]:
+				object_list.append(Vector2(i, j))
+				signals.emit_signal("object_added", len(object_list) - 1)
 	signals.emit_signal("board_changed")
 
 
@@ -213,3 +220,38 @@ func remove_entity(index) -> void:
 	entity_list.remove(index)
 	signals.emit_signal("entity_removed", index)
 	signals.emit_signal("board_changed")
+
+
+func get_object(index : int) -> Dictionary:
+	return board[0][object_list[index].x][object_list[index].y]
+
+
+func get_object_count() -> int:
+	return len(object_list)
+
+
+func get_object_index(position : Vector2) -> int:
+	for i in len(object_list):
+		if object_list[i] == position:
+			return i
+	return -1
+
+
+func remove_object(index : int):
+	board[0][object_list[index].x][object_list[index].y] = {}
+	object_list.remove(index)
+	signals.emit_signal("board_changed")
+
+
+func replace_object(index : int):
+	var object : Dictionary = board[0][object_list[index].x][object_list[index].y]
+	while true: # Find random coordinates pointing to an empty field
+		var x : int = rand_range(0, len(board[0]))
+		var y : int = rand_range(0, len(board[0][x]))
+		if board[0][x][y].hash() == {}.hash() and board[1][x][y].hash() == {}.hash(): # If the field is empty
+			board[0][x][y] = object # Put current object there
+			board[0][object_list[index].x][object_list[index].y] = {} # Remove old object from board
+			object_list[index] = Vector2(x, y) # Update object_list reference
+			break
+	signals.emit_signal("board_changed")
+	
