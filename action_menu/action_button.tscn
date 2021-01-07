@@ -6,4 +6,11 @@
 [node name="ActionButton" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
+[node name="Button" parent="." index="0"]
+margin_right = 41.0
+text = "Pass"
+
+[node name="Border" parent="." index="1"]
+margin_right = 41.0
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

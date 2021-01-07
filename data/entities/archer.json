@@ -38,12 +38,6 @@
 			"range": 4,
 			"usage_limit": 1,
 			"cost": 1
-		},
-		"pass": {
-			"target": ["pass", ""],
-			"name": "Pass",
-			"cost": 0,
-			"usage_limit": 1
 		}
 	}
 }

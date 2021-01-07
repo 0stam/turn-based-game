@@ -8,6 +8,8 @@ var board_size : Vector2 = Vector2(8, 7)
 func _ready():
 	randomize()
 	make_board(board_size)
+	yield(get_tree().create_timer(0.0000000001), "timeout")
+	rect_size = get_viewport().size
 
 
 func make_board(size : Vector2):

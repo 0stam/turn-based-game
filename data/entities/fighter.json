@@ -37,7 +37,7 @@
 			"pierce": 0,
 			"range": 1,
 			"usage_limit": 1,
-			"cost": 1,
+			"cost": 1
 		},
 		"sprint": {
 			"target": ["field", "empty"],
@@ -46,12 +46,6 @@
 			"move": 5,
 			"usage_limit": 1,
 			"cost": 2
-		},
-		"pass": {
-			"target": ["pass", ""],
-			"name": "Pass",
-			"cost": 0,
-			"usage_limit": 1
 		}
 	}
 }

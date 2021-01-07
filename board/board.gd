@@ -26,8 +26,8 @@ func initialize_board(size_recieved=Vector2.ZERO) -> void:
 			return
 		size = size_recieved # If size was changed, proceed with new size
 	
-	while fields.get_child_count() > 0: # Deleting all fields for sake of creating new ones
-		fields.get_child(0).queue_free()
+	for i in fields.get_children(): # Deleting all fields for sake of creating new ones
+		fields.remove_child(i)
 	
 	# Setting border size
 	var margin : int = int(round(0.06 * texture_size))

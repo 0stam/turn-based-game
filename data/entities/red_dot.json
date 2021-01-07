@@ -35,12 +35,5 @@
 			"val": 5,
 			"usage_limit": 1,
 			"cost": 2
-		},
-		"pass": {
-			"type": "pass",
-			"name": "Pass",
-			"cost": 0,
-			"usage_limit": 1
 		}
-	}
 }
