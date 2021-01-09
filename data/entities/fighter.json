@@ -45,8 +45,7 @@
 			"description": "Sprint 5 fields",
 			"move": 7,
 			"usage_limit": 1,
-			"cost": 2,
-			"cooldown": [2, 2]
+			"cost": 2
 		}
 	}
 }

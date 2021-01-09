@@ -201,30 +201,24 @@ func on_entity_removed(index_original : int) -> void:
 		init_entity_variables()
 
 
-# TODO: comment
-func handle_objects() -> void:
-	var i : int = 0
+func handle_objects() -> void: # Handling objects requiring automatic respawn/removal
+	var i : int = 0 # Index of a current object
 	while i < board.get_object_count():
-		var object : Dictionary = board.get_object(i)["object"]
-		if object["time"] != -1:
-			if object["current_time"] > 0:
+		var object : Dictionary = board.get_object(i)["object"] # Currently handled object
+		if object["time"] != -1: # If object isn't set to permanent
+			if object["current_time"] > 0: # If there is still time left for object to peacefully exist
 				object["current_time"] -= 1
-			else:
-				if object["respawns"]:
+			else: # On object timeout
+				if object["respawns"]: # If object should respawn
 					board.replace_object(i)
 					object["current_time"] = object["time"]
-				else:
+				else: # If object should be deleted
 					board.remove_object(i)
 					i -= 1
 		i += 1
 
 
-# TODO: finish
-func decrease_cooldowns() -> void:
-	print(current_entity["actions"])
+func decrease_cooldowns() -> void: # Decreasing cooldowns in every action which requires it
 	for action in current_entity["actions"].values():
-		print("included", "cooldown" in action)
-		if "cooldown" in action:
-			print("on: ", action["cooldown"][0] < action["cooldown"][1])
 		if "cooldown" in action and action["cooldown"][0] < action["cooldown"][1]:
 			action["cooldown"][0] += 1

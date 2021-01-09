@@ -11,6 +11,7 @@ var flood_fill : Array = [] # Required for flood fill to work
 var entity_list : Array = [] # List of all entities positions, required for "get_entity" to work
 var object_list : Array = [] # List of objects requiring control of the objects system
 var entity_temp : Dictionary = {"ap": 0, "actions_usages": {}} # Variables storing temporary entity variables
+var position_blacklist : Array = [] # List of positions which should be left empty during board generation
 
 export var data_path : NodePath
 
@@ -31,12 +32,14 @@ func _ready():
 func initialize_board(size : Vector2, reset:=true) -> void: # Fill board with empty dictionaries
 	if reset:
 		board = [[], []]
+		position_blacklist = []
 	for i in range(size.x):
 		board[0].append([])
 		board[1].append([])
 		for _j in range(size.y):
 			board[0][i].append({})
 			board[1][i].append({})
+	position_blacklist += [Vector2(0, 0), Vector2(0, size.y - 1), Vector2(size.x - 1, 0), Vector2(size.x - 1, size.y - 1)]
 
 
 func reset_flood_fill() -> void:
@@ -101,7 +104,7 @@ func generate_board(name : String) -> void:
 			for i in range(len(object["quantity"])):
 				quantity += pow(field_count, i) * object["quantity"][-i - 1]
 			
-			quantity = clamp(quantity, 0, field_count) # Clamping quantity to valid values
+			quantity = clamp(quantity, 0, field_count - len(position_blacklist)) # Clamping quantity to valid values
 			match object["round"]: # Applying requested type of rounding to int
 				"math":
 					quantity = round(quantity)
@@ -109,13 +112,14 @@ func generate_board(name : String) -> void:
 					quantity = floor(quantity)
 				"up":
 					quantity = ceil(quantity)
+			print("Quantity: ", quantity)
 			
-			# Putting objects on board: if field is empty, place object, else try again
+			# Putting objects on board: if field is empty place object, else try again
 			while quantity > 0:
 				var field_coordinates = Vector2(randi() % len(board[0]), randi() % len(board[0][0]))
-				if board[0][field_coordinates.x][field_coordinates.y].hash() == {}.hash():
-					board[0][field_coordinates.x][field_coordinates.y] = objects[object["id"]].duplicate(true)
-					quantity -= 1
+				if board[0][field_coordinates.x][field_coordinates.y].hash() == {}.hash() and not field_coordinates in position_blacklist:
+						board[0][field_coordinates.x][field_coordinates.y] = objects[object["id"]].duplicate(true)
+						quantity -= 1
 		if check_for_unreachable(): # If map is alright, proceed
 			break
 		else: # If some empty field cannot be accessed (eg. map is split), try again
@@ -215,7 +219,7 @@ func get_entity_index(position : Vector2) -> int: # Returns the index of an enti
 	return -1
 
 
-func remove_entity(index) -> void:
+func remove_entity(index : int) -> void:
 	board[1][entity_list[index].x][entity_list[index].y] = {}
 	entity_list.remove(index)
 	signals.emit_signal("entity_removed", index)
@@ -246,8 +250,8 @@ func remove_object(index : int):
 func replace_object(index : int):
 	var object : Dictionary = board[0][object_list[index].x][object_list[index].y]
 	while true: # Find random coordinates pointing to an empty field
-		var x : int = rand_range(0, len(board[0]))
-		var y : int = rand_range(0, len(board[0][x]))
+		var x : int = int(rand_range(0, len(board[0])))
+		var y : int = int(rand_range(0, len(board[0][x])))
 		if board[0][x][y].hash() == {}.hash() and board[1][x][y].hash() == {}.hash(): # If the field is empty
 			board[0][x][y] = object # Put current object there
 			board[0][object_list[index].x][object_list[index].y] = {} # Remove old object from board
