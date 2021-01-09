@@ -7,7 +7,7 @@ func _ready():
 	pass
 
 
-func add_button(text : String, action : String, cost : int, usage_limit : int, color : Color):
+func add_button(text : String, action : String, cost : int, usage_limit : int, color : Color, on_cooldown : bool):
 	var new_button = button.instance()
 	add_child(new_button)
 	new_button.text = text
@@ -15,6 +15,7 @@ func add_button(text : String, action : String, cost : int, usage_limit : int, c
 	new_button.cost = cost
 	new_button.usage_limit = usage_limit
 	new_button.color = color
+	new_button.on_cooldown = on_cooldown
 
 
 func clear(): # Removes all children

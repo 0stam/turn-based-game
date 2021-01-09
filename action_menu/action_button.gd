@@ -6,6 +6,7 @@ var usage_limit : int = 0 # Button should be "disabled" if the given action was 
 var color : Color # Current UI color based on an active character
 var selected : bool = false
 var available : bool = true
+var on_cooldown = false setget set_cooldown # Represents if action is on cooldown, shouldn't change before button's despawn
 
 export var action : String = ""
 
@@ -28,7 +29,7 @@ func set_text(value : String):
 
 
 func check_for_availability(ap : int, action_usages : Dictionary):
-	available = ap >= cost and action_usages[action] > 0
+	available = not on_cooldown and ap >= cost and action_usages[action] > 0
 	update_graphics()
 
 
@@ -50,4 +51,10 @@ func update_graphics(): # Update graphics according to the selected and availabl
 
 func on_action_succeeded():
 	selected = false
+	update_graphics()
+
+
+func set_cooldown(value : bool) -> void:
+	on_cooldown = value
+	available = available and not on_cooldown
 	update_graphics()

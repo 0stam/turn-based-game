@@ -11,6 +11,7 @@
 		"range": "Range",
 		"pierce": "Armor pierce",
 		"cost": "Cost",
+		"cooldown": "Cooldown",
 		"usage_limit": "Usage limit"
 	},
 	"aliases": {

@@ -78,7 +78,8 @@ func on_current_entity_changed(index : int) -> void:
 	print(entity_temp)
 	for i in entity["actions"].keys():
 		var action : Dictionary = entity["actions"][i]
-		action_menu.add_button(action["name"], i, action["cost"], action["usage_limit"], entity["color"])
+		var on_cooldown : bool = "cooldown" in action and action["cooldown"][0] < action["cooldown"][1]
+		action_menu.add_button(action["name"], i, action["cost"], action["usage_limit"], entity["color"], on_cooldown)
 
 
 func on_targets_display_changed(targets : Array) -> void:

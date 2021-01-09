@@ -61,6 +61,7 @@ func clear_queue() -> void:
 
 func next() -> void:
 	decrease_effects()
+	decrease_cooldowns()
 	if current < len(queue) - 1:
 		current += 1
 		
@@ -133,14 +134,19 @@ func on_action_triggered() -> void: # Handle actions which doesn't require manua
 
 
 func validate_action() -> bool: # Returns true if action is valid
-	if current_entity["actions"][current_action]["cost"] > temp["ap"]:
+	var action : Dictionary = current_entity["actions"][current_action]
+	if action["cost"] > temp["ap"]:
 		return false
 	if temp["actions_usages"][current_action] < 1:
+		return false
+	if "cooldown" in action and action["cooldown"][0] < action["cooldown"][1]:
 		return false
 	return true
 
 
 func end_action() -> void:
+	if "cooldown" in current_entity["actions"][current_action]:
+		current_entity["actions"][current_action]["cooldown"][0] = 0
 	target_died = false
 	temp["ap"] -= current_entity["actions"][current_action]["cost"]
 	temp["actions_usages"][current_action] -= 1
@@ -195,7 +201,8 @@ func on_entity_removed(index_original : int) -> void:
 		init_entity_variables()
 
 
-func handle_objects():
+# TODO: comment
+func handle_objects() -> void:
 	var i : int = 0
 	while i < board.get_object_count():
 		var object : Dictionary = board.get_object(i)["object"]
@@ -210,3 +217,14 @@ func handle_objects():
 					board.remove_object(i)
 					i -= 1
 		i += 1
+
+
+# TODO: finish
+func decrease_cooldowns() -> void:
+	print(current_entity["actions"])
+	for action in current_entity["actions"].values():
+		print("included", "cooldown" in action)
+		if "cooldown" in action:
+			print("on: ", action["cooldown"][0] < action["cooldown"][1])
+		if "cooldown" in action and action["cooldown"][0] < action["cooldown"][1]:
+			action["cooldown"][0] += 1
