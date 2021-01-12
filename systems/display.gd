@@ -113,6 +113,7 @@ func on_targeting_called(action): # Function updateing action specific informati
 	# Fill ActionDisplay with proper parameters
 	var rules : Dictionary = data.rules["action_parameters"]
 	var aliases : Dictionary = data.rules["aliases"]
+	var separators : Dictionary = data.rules["separators"]
 	
 	for i in rules.keys(): # For each key in rules (uses rules instead of action for consistent parameter order)
 		if not i in action: # If given key isn't present it current action, continue
@@ -123,8 +124,13 @@ func on_targeting_called(action): # Function updateing action specific informati
 			for j in aliases[i]:
 				if j[0] == action[i]:
 					alias = j[1]
+		
+		var separator : String = "-" # Separator used when displaying arrays
+		if i in separators: # Checking if there is different separator set for this parameter
+			separator = separators[i]
+		
 		if alias is Array:
-			action_display.add_parameter(rules[i], str(alias[0]) + "-" + str(alias[1]))
+			action_display.add_parameter(rules[i], str(alias[0]) + separator + str(alias[1]))
 		else:
 			action_display.add_parameter(rules[i], str(alias))
 	

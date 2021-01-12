@@ -76,7 +76,7 @@ func entity(action):
 	var pos1 = board.get_entity_position(current_entity)
 	for i in range(board.get_entity_count()):
 		if current_entity == i and (action["target"][1] == "self" or action["target"][1] == "ally"):
-			available_fields[pos1.x][pos1.y] == true
+			available_fields[pos1.x][pos1.y] = true
 			continue
 		
 		var teammates : bool = board.get_entity(current_entity)["team"] == board.get_entity(i)["team"]

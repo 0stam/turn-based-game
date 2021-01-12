@@ -9,7 +9,8 @@
 	"entities": [
 		"entities/fighter.json",
 		"entities/archer.json",
-		"entities/trooper.json"
+		"entities/trooper.json",
+		"entities/knight.json"
 	],
 	"rules": "behaviour/rules.json"
 }

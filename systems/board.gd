@@ -112,7 +112,6 @@ func generate_board(name : String) -> void:
 					quantity = floor(quantity)
 				"up":
 					quantity = ceil(quantity)
-			print("Quantity: ", quantity)
 			
 			# Putting objects on board: if field is empty place object, else try again
 			while quantity > 0:
@@ -134,42 +133,26 @@ func generate_board(name : String) -> void:
 
 
 func place_entity() -> void:
-	var end : bool = false
-	for j in range(len(board[0][0])):
-		for i in range(len(board[0])):
-			if not get_key(Vector2(i, j), "collision", false):
-				board[1][i][j] = entities["red_dot"].duplicate(true)
-				board[1][i][j]["team"] = 0
-				entity_list.append(Vector2(i, j))
-				signals.emit_signal("entity_added", len(entity_list) - 1)
-				end = true
-				break
-		if end:
-			break
-	end = false
-	for j in range(len(board[0][0]) - 1, -1, -1):
-		for i in range(len(board[0]) - 1, -1, -1):
-			if not get_key(Vector2(i, j), "collision", false):
-				board[1][i][j] = entities["blue_dot"].duplicate(true)
-				board[1][i][j]["team"] = 1
-				entity_list.append(Vector2(i, j))
-				signals.emit_signal("entity_added", len(entity_list) - 1)
-				end = true
-				break
-		if end:
-			break
-	end = false
-	for j in range(len(board[0][0]) - 1, -1, -1):
-		for i in range(len(board[0])):
-			if not get_key(Vector2(i, j), "collision", false):
-				board[1][i][j] = entities["trooper"].duplicate(true)
-				board[1][i][j]["team"] = 2
-				entity_list.append(Vector2(i, j))
-				signals.emit_signal("entity_added", len(entity_list) - 1)
-				end = true
-				break
-		if end:
-			break
+	board[1][0][0] = entities["red_dot"].duplicate(true)
+	board[1][0][0]["team"] = 0
+	entity_list.append(Vector2(0, 0))
+	signals.emit_signal("entity_added", 0)
+	
+	board[1][len(board[0]) - 1][len(board[0][0]) - 1] = entities["blue_dot"].duplicate(true)
+	board[1][len(board[0]) - 1][len(board[0][0]) - 1]["team"] = 1
+	entity_list.append(Vector2(len(board[0]) - 1, len(board[0][0]) - 1))
+	signals.emit_signal("entity_added", 1)
+	
+	board[1][0][len(board[0][0]) - 1] = entities["trooper"].duplicate(true)
+	board[1][0][len(board[0][0]) - 1]["team"] = 2
+	entity_list.append(Vector2(0, len(board[0][0]) - 1))
+	signals.emit_signal("entity_added", 2)
+	
+	board[1][len(board[0]) - 1][0] = entities["knight"].duplicate(true)
+	board[1][len(board[0]) - 1][0]["team"] = 2
+	entity_list.append(Vector2(len(board[0]) - 1, 0))
+	signals.emit_signal("entity_added", 3)
+	
 	signals.emit_signal("queue_shuffle_requested")
 	signals.emit_signal("board_changed")
 

@@ -1,7 +1,7 @@
 {
-	"id": "red_dot",
-	"name": "FIGHTER",
-	"graphic": "entities/sword.png",
+	"id": "knight",
+	"name": "KNIGHT",
+	"graphic": "entities/sword_yellow.png",
 
 	"max_hp": 5,
 	"hp": 5,
@@ -9,7 +9,7 @@
 	"armor": 0,
 
 	"collision": true,
-	"color": "#ff1e1e",
+	"color": "#ffd42a",
 
 	"effects": {
 		"armor": [0, 0],
@@ -33,19 +33,22 @@
 			"target": ["entity", "enemy"],
 			"name": "Attack",
 			"descrition": "Attack nearby target",
-			"damage": [2, 3],
+			"damage": [1, 2],
 			"pierce": 0,
 			"range": 1,
 			"usage_limit": 1,
 			"cost": 1
 		},
-		"sprint": {
-			"target": ["field", "empty"],
-			"name": "Sprint",
-			"description": "Sprint 5 fields",
-			"move": 5,
+		"armor": {
+			"target": ["entity", "self"],
+			"name": "Armor",
+			"description": "Give yourself an armor",
+			"effects": {
+				"armor": [1, 1]
+			},
 			"usage_limit": 1,
-			"cost": 2
+			"cost": 2,
+			"cooldown": [3, 3]
 		}
 	}
 }

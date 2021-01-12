@@ -26,5 +26,8 @@
 			[["field", "empty"], "field"],
 			[["field", ""], "field"]
 		]
+	},
+	"separators": {
+		"cooldown": "/"
 	}
 }

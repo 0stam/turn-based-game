@@ -11,11 +11,13 @@ var target_died : bool = false
 
 var objects : Array = []
 
+var effects_queued : Array = [] # Effects queued to be decreased at the end of the turn
+
 export var board_system_path : NodePath # Path to board system
 
 onready var board = get_node(board_system_path) # Actual board system refference
 onready var signals = Signals
-onready var temp = board.entity_temp
+onready var temp = board.entity_temp # Temprorary variables which require to be exchanged with other systems
 
 func _ready():
 	signals.connect("action_changed", self, "on_action_changed")
@@ -166,19 +168,22 @@ func apply_effects() -> void:
 			match i:
 				"regen":
 					signals.emit_signal("regeneration_requested", queue[current], effect[0])
+					effect[1] -= 1
 				"armor", "hp", "damage", "healing", "move":
-					pass # Effects handled somewhere else, prevents warning below from beeing triggered
+					pass
 				_:
 					print("***Unimplemented effect***")
+	decrease_effects()
 
 
 func decrease_effects():
-	for i in current_entity["effects"].keys():
-		var effect : Array = current_entity["effects"][i]
-		if effect[1] != 0:
-			effect[1] -= 1
-		if effect[1] == 0:
-			effect[0] = 0
+	for i in current_entity["effects"]:
+		if i in effects_queued:
+			current_entity["effects"][i][1] -= 1
+			effects_queued.erase(i)
+		else:
+			if current_entity["effects"][i][1] > 0:
+				effects_queued.append(i)
 
 
 func on_entity_removed(index_original : int) -> void:

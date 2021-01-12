@@ -9,7 +9,7 @@ func _ready():
 	randomize()
 	var random_seed = randi()
 	seed(random_seed)
-	print(random_seed)
+	print("Random seed: ", random_seed)
 	make_board(board_size)
 	yield(get_tree().create_timer(0.0000000001), "timeout")
 	rect_size = get_viewport().size
